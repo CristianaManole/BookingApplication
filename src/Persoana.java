@@ -13,6 +13,10 @@ public class Persoana {
         this.telefon = telefon;
     }
 
+    public String getCNP() {
+        return CNP;
+    }
+
     public void afisare() {
         System.out.println("Nume: " + nume + ", Prenume: " + prenume + ", Sex: " + sex + ", CNP: " + CNP + ", Telefon: " + telefon);
     }

@@ -43,7 +43,7 @@ public class Rezervare {
         }
     }
 
-    public void ActualizareRezervare(){
+    public void actualizareRezervare(){
         Scanner s = new Scanner(System.in);
         System.out.println("Vrei sa actualizezi nr de camere? (da/nu)");
         String raspuns = s.nextLine();
@@ -73,6 +73,8 @@ public class Rezervare {
             data_checkout = s.nextLine();
             pretTotal += 50;
         }
+
+        System.out.println("Rezervarea a fost actualizata cu succes!");
 
 
     }

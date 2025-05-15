@@ -16,6 +16,10 @@ public class Client extends Persoana{
         this.rezervari = new ArrayList<>();
     }
 
+    public ArrayList<Rezervare> getRezervari() {
+        return rezervari;
+    }
+
     public void rezervareCamera() {
         Rezervare rez;
         Scanner s = new Scanner(System.in);
@@ -42,6 +46,20 @@ public class Client extends Persoana{
 
         System.out.println("Rezervare realizată cu succes.");
     }
+
+    public void efectuarePlata() {
+        Scanner s = new Scanner(System.in);
+        System.out.println("Introduceti numele cardului:");
+        this.numeCard = s.nextLine();
+        System.out.println("Introduceti numarul cardului:");
+        this.nrcard = s.nextLine();
+        System.out.println("Introduceti data de expirare a cardului:");
+        this.dataExpirare = s.nextLine();
+        System.out.println("Introduceti CCV-ul:");
+        this.CCV = s.nextInt();
+        System.out.println("Plata a fost realizată cu succes.");
+    }
+
 
     @Override
     public void afisare() {
