@@ -50,6 +50,7 @@ public class Rezervare {
         if(raspuns.equalsIgnoreCase("da")) {
             System.out.println("Introduceti noul nr de camere:");
             nrCamere = s.nextInt();
+            s.nextLine();
             pretTotal += 100;
         }
         System.out.println("Vrei sa actualizezi nr de persoane? (da/nu)");
@@ -57,6 +58,7 @@ public class Rezervare {
         if(raspuns.equalsIgnoreCase("da")) {
             System.out.println("Introduceti noul nr de persoane:");
             nrPersoane = s.nextInt();
+            s.nextLine();
             pretTotal += 75;
         }
         System.out.println("Vrei sa actualizezi data check-in? (da/nu)");
