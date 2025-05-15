@@ -60,6 +60,30 @@ public class Main {
         destinatii.get(8).adaugaCazare(cazari.get(8)); // Viena
         destinatii.get(9).adaugaCazare(cazari.get(9)); // Zurich
 
+        for (Cazare cazare : cazari) {
+            ArrayList<Camera> camere = new ArrayList<>();
+
+            camere.add(new Camera(TipCamera.SINGLE, 100.0f));
+            camere.add(new Camera(TipCamera.DOUBLE, 150.0f));
+            camere.add(new Camera(TipCamera.TWIN, 140.0f));
+            camere.add(new Camera(TipCamera.TRIPLE, 180.0f));
+            camere.add(new Camera(TipCamera.SUITE, 250.0f));
+
+            for (Camera camera : camere) {
+                cazare.adaugareCamere(camera);
+            }
+        }
+
+        for (Cazare cazare : cazari) {
+            ArrayList<TipFacilitati> listaFacilitati = new ArrayList<>();
+            listaFacilitati.add(TipFacilitati.Parcare);
+            listaFacilitati.add(TipFacilitati.Piscina);
+            listaFacilitati.add(TipFacilitati.ApresSki);
+
+            Facilitati facilitati = new Facilitati(listaFacilitati);
+            cazare.adaugareFacilitati(facilitati);
+        }
+
         if (s.equals("A")) {
             //SE COMPLETEAZA PT ANGAJAT
         }
@@ -86,10 +110,16 @@ public class Main {
             }
 
             // vizualizare destinatii
-            System.out.println("Destinatii disponibile");
-            for (Destinatie d : destinatii) {
-                d.afisareDestinatii();
+            System.out.println("Vrei sa vizualizezi destinatiile disponibile? (Y/N)");
+            s = sc.nextLine();
+            if (s.equals("Y")) {
+                System.out.println("Destinatii disponibile");
+                for (Destinatie d : destinatii) {
+                    d.afisareDestinatii();
+                }
             }
+
+            System.out.println("Vezi hotelurile noastre! :)");
 
             // vizualizare hoteluri in functie de destinatie
             System.out.println("Introdu tara unde vrei sa mergi");
@@ -99,6 +129,7 @@ public class Main {
             for (Destinatie d : destinatii) {
                 if (d.getTara().equals(t) && d.getOras().equals(oras)) {
                     d.afisare();
+
                 }
             }
 

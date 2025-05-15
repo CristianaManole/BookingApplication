@@ -8,6 +8,7 @@ public class Facilitati {
     }
 
     public void afisare() {
+        System.out.println("Facilitatile noastre: ");
         for (TipFacilitati tipFacilitati : tip) {
             System.out.println(tipFacilitati.toString());
         }
