@@ -74,15 +74,15 @@ public class Main {
             System.out.println("Ai cont?(Y/N)");
             s = sc.nextLine();
             if (s.equals("N")) {
-                System.out.println("Nume client: ");
+                System.out.print("Nume client: ");
                 String nume = sc.nextLine();
-                System.out.println("Prenume client: ");
+                System.out.print("Prenume client: ");
                 String prenume = sc.nextLine();
-                System.out.println("Sex client M/F: ");
+                System.out.print("Sex client M/F: ");
                 String sex = sc.nextLine();
-                System.out.println("CNP client: ");
+                System.out.print("CNP client: ");
                 String cnp = sc.nextLine();
-                System.out.println("Telefon client: ");
+                System.out.print("Telefon client: ");
                 String telefon = sc.nextLine();
                 System.out.print("Alege AFACERIST, TURIST, PENSIONAR, FAMILIE, CUPLU, GRUP: ");
                 TipClient t = TipClient.valueOf(sc.nextLine().toUpperCase());
@@ -90,7 +90,7 @@ public class Main {
                 clienti.add(clientCurent);
                 System.out.println("Cont client efectuat cu succes!");
             } else if (s.equals("Y")) {
-                System.out.println("Introdu CNP-ul tău pentru autentificare:");
+                System.out.print("Introdu CNP-ul tău pentru autentificare: ");
                 String cnp = sc.nextLine();
                 for (Client c : clienti) {
                     if (c.getCNP().equals(cnp)) {
@@ -127,9 +127,9 @@ public class Main {
                         }
                         break;
                     case "2":
-                        System.out.println("Introdu țara:");
+                        System.out.print("Introdu țara: ");
                         String tara = sc.nextLine();
-                        System.out.println("Introdu orașul:");
+                        System.out.print("Introdu orașul: ");
                         String oras = sc.nextLine();
                         for (Destinatie d : destinatii) {
                             if (d.getTara().equalsIgnoreCase(tara) && d.getOras().equalsIgnoreCase(oras)) {
@@ -154,7 +154,7 @@ public class Main {
                             System.out.print((i + 1) + ". ");
                             rezervari.get(i).afisare();
                         }
-                        System.out.println("Alege rezervarea:");
+                        System.out.print("Alege rezervarea: ");
                         int idx = Integer.parseInt(sc.nextLine());
                         if (idx >= 1 && idx <= rezervari.size()) {
                             rezervari.get(idx - 1).actualizareRezervare();
@@ -172,7 +172,7 @@ public class Main {
                             System.out.print((i + 1) + ". ");
                             rezervari.get(i).afisare();
                         }
-                        System.out.println("Alege rezervarea:");
+                        System.out.print("Alege rezervarea: ");
                         int index = Integer.parseInt(sc.nextLine());
                         if (index >= 1 && index <= rezervari.size()) {
                             rezervari.remove(index - 1);
@@ -182,7 +182,7 @@ public class Main {
                         }
                         break;
                     case "7":
-                        System.out.println("Scrie feedback-ul tău:");
+                        System.out.print("Scrie feedback-ul tău: ");
                         String feedback = sc.nextLine();
                         System.out.println("Feedback salvat: " + feedback);
                         break;

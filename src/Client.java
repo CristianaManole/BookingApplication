@@ -30,13 +30,13 @@ public class Client extends Persoana{
         System.out.print("Introduceți orașul: ");
         String oras = s.nextLine();
 
-        System.out.println("Introdu data de check-in:");
+        System.out.print("Introdu data de check-in: ");
         String dc = s.nextLine();
-        System.out.println("Introdu data de check-out:");
+        System.out.print("Introdu data de check-out: ");
         String dc2 = s.nextLine();
-        System.out.println("Introdu nr de persoane:");
+        System.out.print("Introdu nr de persoane: ");
         int nrp = s.nextInt();
-        System.out.println("Introdu nr de camere:");
+        System.out.print("Introdu nr de camere: ");
         int nrc = s.nextInt();
 
         rez = new Rezervare(dc, dc2, nrp, nrc);
@@ -49,13 +49,13 @@ public class Client extends Persoana{
 
     public void efectuarePlata() {
         Scanner s = new Scanner(System.in);
-        System.out.println("Introduceti numele cardului:");
+        System.out.print("Introduceti numele cardului: ");
         this.numeCard = s.nextLine();
-        System.out.println("Introduceti numarul cardului:");
+        System.out.print("Introduceti numarul cardului: ");
         this.nrcard = s.nextLine();
-        System.out.println("Introduceti data de expirare a cardului:");
+        System.out.print("Introduceti data de expirare a cardului: ");
         this.dataExpirare = s.nextLine();
-        System.out.println("Introduceti CCV-ul:");
+        System.out.print("Introduceti CCV-ul: ");
         this.CCV = s.nextInt();
         System.out.println("Plata a fost realizată cu succes.");
     }

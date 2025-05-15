@@ -48,7 +48,7 @@ public class Rezervare {
         System.out.println("Vrei sa actualizezi nr de camere? (da/nu)");
         String raspuns = s.nextLine();
         if(raspuns.equalsIgnoreCase("da")) {
-            System.out.println("Introduceti noul nr de camere:");
+            System.out.print("Introduceti noul nr de camere: ");
             nrCamere = s.nextInt();
             s.nextLine();
             pretTotal += 100;
@@ -56,7 +56,7 @@ public class Rezervare {
         System.out.println("Vrei sa actualizezi nr de persoane? (da/nu)");
         raspuns = s.nextLine();
         if(raspuns.equalsIgnoreCase("da")) {
-            System.out.println("Introduceti noul nr de persoane:");
+            System.out.print("Introduceti noul nr de persoane: ");
             nrPersoane = s.nextInt();
             s.nextLine();
             pretTotal += 75;
@@ -64,14 +64,14 @@ public class Rezervare {
         System.out.println("Vrei sa actualizezi data check-in? (da/nu)");
         raspuns = s.nextLine();
         if(raspuns.equalsIgnoreCase("da")) {
-            System.out.println("Introduceti noua data check-in:");
+            System.out.print("Introduceti noua data check-in: ");
             data_checkin = s.nextLine();
             pretTotal += 50;
         }
         System.out.println("Vrei sa actualizezi data check-out? (da/nu)");
         raspuns = s.nextLine();
         if(raspuns.equalsIgnoreCase("da")) {
-            System.out.println("Introduceti noua data check-out:");
+            System.out.print("Introduceti noua data check-out: ");
             data_checkout = s.nextLine();
             pretTotal += 50;
         }
