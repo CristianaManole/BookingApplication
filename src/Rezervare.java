@@ -10,6 +10,15 @@ public class Rezervare {
     private float pretTotal;
     private ArrayList<Destinatie> destinatii;
 
+    Rezervare() {
+        this.data_checkin = "";
+        this.data_checkout = "";
+        this.nrPersoane = 0;
+        this.nrCamere = 0;
+        this.pretTotal = 0f;
+        this.destinatii = new ArrayList<>();
+    }
+
     public Rezervare(String data_checkin, String data_checkout, int nrPersoane, int nrCamere) {
         Random random = new Random();
         float min = 200f;
