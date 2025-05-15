@@ -5,22 +5,15 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Client clientCurent = null; // clientul care e "logat"
+        Client clientCurent = null;
 
         Client persoana = new Client("Popescu", "Ion", 'M', "1234567890123", "0722222222", TipClient.TURIST);
-        persoana.afisare();
-        persoana.stergere();
-        System.out.println();
-
         Client client = new Client("Ionescu", "Maria", 'F', "1234567890123", "0733333333", TipClient.CUPLU);
-        client.afisare();
-        System.out.println();
         ArrayList<Client> clienti = new ArrayList<>();
         clienti.add(persoana);
         clienti.add(client);
 
         Angajat angajat = new Angajat("Georgescu", "Vasile", 'M', "1234567890123", "0744444444", TipAngajat.Administrator);
-        angajat.afisare();
 
         System.out.println("Esti client sau angajat?(A/C)");
         Scanner sc = new Scanner(System.in);
@@ -51,26 +44,17 @@ public class Main {
         cazari.add(new Cazare("Vienna Central", "Ringstrasse 20, Viena", "4", "Hotel", 7, 1));
         cazari.add(new Cazare("Zurich Heights", "Bahnhofstrasse 100, Zurich", "5", "Hotel", 11, 2));
 
-        destinatii.get(0).adaugaCazare(cazari.get(0)); // Barcelona
-        destinatii.get(1).adaugaCazare(cazari.get(1)); // Paris
-        destinatii.get(2).adaugaCazare(cazari.get(2)); // Roma
-        destinatii.get(3).adaugaCazare(cazari.get(3)); // Berlin
-        destinatii.get(4).adaugaCazare(cazari.get(4)); // Londra
-        destinatii.get(5).adaugaCazare(cazari.get(5)); // Atena
-        destinatii.get(6).adaugaCazare(cazari.get(6)); // Lisabona
-        destinatii.get(7).adaugaCazare(cazari.get(7)); // Amsterdam
-        destinatii.get(8).adaugaCazare(cazari.get(8)); // Viena
-        destinatii.get(9).adaugaCazare(cazari.get(9)); // Zurich
+        for (int i = 0; i < destinatii.size(); i++) {
+            destinatii.get(i).adaugaCazare(cazari.get(i));
+        }
 
         for (Cazare cazare : cazari) {
             ArrayList<Camera> camere = new ArrayList<>();
-
             camere.add(new Camera(TipCamera.SINGLE, 100.0f));
             camere.add(new Camera(TipCamera.DOUBLE, 150.0f));
             camere.add(new Camera(TipCamera.TWIN, 140.0f));
             camere.add(new Camera(TipCamera.TRIPLE, 180.0f));
             camere.add(new Camera(TipCamera.SUITE, 250.0f));
-
             for (Camera camera : camere) {
                 cazare.adaugareCamere(camera);
             }
@@ -81,16 +65,13 @@ public class Main {
             listaFacilitati.add(TipFacilitati.Parcare);
             listaFacilitati.add(TipFacilitati.Piscina);
             listaFacilitati.add(TipFacilitati.ApresSki);
-
             Facilitati facilitati = new Facilitati(listaFacilitati);
             cazare.adaugareFacilitati(facilitati);
         }
 
         if (s.equals("A")) {
-            //SE COMPLETEAZA PT ANGAJAT
-        }
-        // creare cont
-        else if (s.equals("C")) {
+            // SE COMPLETEAZA PT ANGAJAT
+        } else if (s.equals("C")) {
             System.out.println("Ai cont?(Y/N)");
             s = sc.nextLine();
             if (s.equals("N")) {
@@ -106,8 +87,8 @@ public class Main {
                 String telefon = sc.nextLine();
                 System.out.print("Alege AFACERIST, TURIST, PENSIONAR, FAMILIE, CUPLU, GRUP: ");
                 TipClient t = TipClient.valueOf(sc.nextLine().toUpperCase());
-                Client c1 = new Client(nume, prenume, sex.charAt(0), cnp, telefon, t);
-                clienti.add(c1);
+                clientCurent = new Client(nume, prenume, sex.charAt(0), cnp, telefon, t);
+                clienti.add(clientCurent);
                 System.out.println("Cont client efectuat cu succes!");
             } else if (s.equals("Y")) {
                 System.out.println("Introdu CNP-ul tău pentru autentificare:");
@@ -119,134 +100,101 @@ public class Main {
                         break;
                     }
                 }
-
-                // vizualizare destinatii
-                System.out.println("Vrei sa vizualizezi destinatiile disponibile? (Y/N)");
-                s = sc.nextLine();
-                if (s.equals("Y")) {
-                    System.out.println("Destinatii disponibile");
-                    for (Destinatie d : destinatii) {
-                        d.afisareDestinatii();
-                    }
-                }
-
-                System.out.println("Vezi hotelurile noastre! :)");
-
-                // vizualizare hoteluri in functie de destinatie
-                System.out.println("Introdu tara unde vrei sa mergi");
-                String t = sc.nextLine();
-                System.out.println("Introdu orasul");
-                String oras = sc.nextLine();
-                for (Destinatie d : destinatii) {
-                    if (d.getTara().equals(t) && d.getOras().equals(oras)) {
-                        d.afisare();
-
-                    }
-                }
-
-                // rezervare camera + plata
-                System.out.println("Vrei sa rezervi o camera? (Y/N)");
-                s = sc.nextLine();
-                if (s.equals("Y")) {
-                    clientCurent.rezervareCamera();
-                    clientCurent.efectuarePlata();
-                    System.out.println("Rezervare realizata cu succes!");
-                }
-                // vizualizare rezervari
-                System.out.println("Vrei sa vezi rezervarile tale? (Y/N)");
-                s = sc.nextLine();
-                if (s.equals("Y")) {
-                    clientCurent.afisare();
-                }
-
-                // Scrie feedback
-                System.out.println("Vrei sa scrii un feedback? (Y/N)");
-                s = sc.nextLine();
-                if (s.equals("Y")) {
-                    System.out.println("Scrie feedback-ul tau:");
-                    String feedback = sc.nextLine();
-                    System.out.println("Feedback-ul a fost adaugat cu succes: " + feedback);
-                }
-
-                // Rezerva transport - de modificat
-                /*System.out.println("Vrei sa rezervi transport? (Y/N)");
-                s = sc.nextLine();
-                if (s.equals("Y")) {
-                    System.out.println("Introdu data plecarii:");
-                    String dataPlecare = sc.nextLine();
-                    System.out.println("Introdu data intoarcerii:");
-                    String dataIntoarcere = sc.nextLine();
-                    System.out.println("Introdu tipul de transport (autocar/tren/avion):");
-                    String tipTransport = sc.nextLine();
-                    System.out.println("Transportul a fost rezervat cu succes!");
-                }*/
-
-                System.out.println("Vrei să modifici o rezervare existentă? (Y/N)");
-                s = sc.nextLine();
-
-                if (s.equalsIgnoreCase("Y")) {
-                    if (clientCurent.getRezervari().isEmpty()) {
-                        System.out.println("Nu ai nicio rezervare.");
-                    } else {
-                        System.out.println("Alege rezervarea pe care vrei să o modifici:");
-                        ArrayList<Rezervare> rezervariClient = clientCurent.getRezervari();
-
-                        // afișează rezervările numerotate
-                        for (int i = 0; i < rezervariClient.size(); i++) {
-                            System.out.print((i + 1) + ". ");
-                            rezervariClient.get(i).afisare();
-                        }
-
-                        System.out.println("Introdu numărul rezervării:");
-                        int index = sc.nextInt();
-                        sc.nextLine(); // consumă \n
-
-                        if (index >= 1 && index <= rezervariClient.size()) {
-                            Rezervare deModificat = rezervariClient.get(index - 1);
-                            deModificat.actualizareRezervare();
-                            System.out.println("Rezervarea a fost actualizată.");
-                        } else {
-                            System.out.println("Index invalid.");
-                        }
-                    }
-                }
-
-                //Anuleaza rezervare
-                System.out.println("Vrei sa anulezi o rezervare? (Y/N)");
-                s = sc.nextLine();
-                if (s.equalsIgnoreCase("Y")) {
-                    if (clientCurent.getRezervari().isEmpty()) {
-                        System.out.println("Nu ai nicio rezervare.");
-                    } else {
-                        System.out.println("Alege rezervarea pe care vrei să o anulezi:");
-                        ArrayList<Rezervare> rezervariClient = clientCurent.getRezervari();
-
-                        // afișează rezervările numerotate
-                        for (int i = 0; i < rezervariClient.size(); i++) {
-                            System.out.print((i + 1) + ". ");
-                            rezervariClient.get(i).afisare();
-                        }
-
-                        System.out.println("Introdu numărul rezervării:");
-                        int index = sc.nextInt();
-                        sc.nextLine(); // consumă \n
-
-                        if (index >= 1 && index <= rezervariClient.size()) {
-                            Rezervare deAnulat = rezervariClient.get(index - 1);
-                            clientCurent.getRezervari().remove(deAnulat);
-                            System.out.println("Rezervarea a fost anulată. Vei primii banii înapoi în termen de 3 zile lucrătoare.");
-                        } else {
-                            System.out.println("Index invalid.");
-                        }
-                    }
-                }
-
-
-
-
-
             }
 
+            if (clientCurent == null) {
+                System.out.println("Eroare: niciun client conectat.");
+                return;
+            }
+
+            boolean ruleaza = true;
+            while (ruleaza) {
+                System.out.println("\n--- MENIU PRINCIPAL ---");
+                System.out.println("1. Vizualizează destinațiile disponibile");
+                System.out.println("2. Caută hoteluri");
+                System.out.println("3. Rezervă cameră");
+                System.out.println("4. Vezi rezervările tale");
+                System.out.println("5. Modifică o rezervare");
+                System.out.println("6. Anulează o rezervare");
+                System.out.println("7. Scrie feedback");
+                System.out.println("0. Ieșire");
+                System.out.print("Alege o opțiune: ");
+                String opt = sc.nextLine();
+
+                switch (opt) {
+                    case "1":
+                        for (Destinatie d : destinatii) {
+                            d.afisareDestinatii();
+                        }
+                        break;
+                    case "2":
+                        System.out.println("Introdu țara:");
+                        String tara = sc.nextLine();
+                        System.out.println("Introdu orașul:");
+                        String oras = sc.nextLine();
+                        for (Destinatie d : destinatii) {
+                            if (d.getTara().equalsIgnoreCase(tara) && d.getOras().equalsIgnoreCase(oras)) {
+                                d.afisare();
+                            }
+                        }
+                        break;
+                    case "3":
+                        clientCurent.rezervareCamera();
+                        clientCurent.efectuarePlata();
+                        break;
+                    case "4":
+                        clientCurent.afisare();
+                        break;
+                    case "5":
+                        ArrayList<Rezervare> rezervari = clientCurent.getRezervari();
+                        if (rezervari.isEmpty()) {
+                            System.out.println("Nu ai rezervări.");
+                            break;
+                        }
+                        for (int i = 0; i < rezervari.size(); i++) {
+                            System.out.print((i + 1) + ". ");
+                            rezervari.get(i).afisare();
+                        }
+                        System.out.println("Alege rezervarea:");
+                        int idx = Integer.parseInt(sc.nextLine());
+                        if (idx >= 1 && idx <= rezervari.size()) {
+                            rezervari.get(idx - 1).actualizareRezervare();
+                        } else {
+                            System.out.println("Index invalid.");
+                        }
+                        break;
+                    case "6":
+                        rezervari = clientCurent.getRezervari();
+                        if (rezervari.isEmpty()) {
+                            System.out.println("Nu ai rezervări.");
+                            break;
+                        }
+                        for (int i = 0; i < rezervari.size(); i++) {
+                            System.out.print((i + 1) + ". ");
+                            rezervari.get(i).afisare();
+                        }
+                        System.out.println("Alege rezervarea:");
+                        int index = Integer.parseInt(sc.nextLine());
+                        if (index >= 1 && index <= rezervari.size()) {
+                            rezervari.remove(index - 1);
+                            System.out.println("Rezervarea a fost anulată.");
+                        } else {
+                            System.out.println("Index invalid.");
+                        }
+                        break;
+                    case "7":
+                        System.out.println("Scrie feedback-ul tău:");
+                        String feedback = sc.nextLine();
+                        System.out.println("Feedback salvat: " + feedback);
+                        break;
+                    case "0":
+                        System.out.println("La revedere!");
+                        ruleaza = false;
+                        break;
+                    default:
+                        System.out.println("Opțiune invalidă.");
+                }
+            }
         }
     }
 }
