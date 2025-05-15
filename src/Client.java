@@ -47,17 +47,27 @@ public class Client extends Persoana{
         System.out.println("Rezervare realizată cu succes.");
     }
 
-    public void efectuarePlata() {
-        Scanner s = new Scanner(System.in);
-        System.out.print("Introduceti numele cardului: ");
-        this.numeCard = s.nextLine();
-        System.out.print("Introduceti numarul cardului: ");
-        this.nrcard = s.nextLine();
-        System.out.print("Introduceti data de expirare a cardului: ");
-        this.dataExpirare = s.nextLine();
-        System.out.print("Introduceti CCV-ul: ");
-        this.CCV = s.nextInt();
-        System.out.println("Plata a fost realizată cu succes.");
+    public boolean efectuarePlata(String numeCard, String nrcard, String dataExpirare, int CCV) {
+        if (numeCard == null || numeCard.trim().isEmpty()) {
+            return false;
+        }
+        if (nrcard == null || nrcard.trim().length() < 16) {
+            return false;
+        }
+        if (dataExpirare == null || !dataExpirare.matches("\\d{2}/\\d{2}")) {
+            return false;
+        }
+        if (String.valueOf(CCV).length() != 3) {
+            return false;
+        }
+
+        // Setează doar dacă totul e valid
+        this.numeCard = numeCard;
+        this.nrcard = nrcard;
+        this.dataExpirare = dataExpirare;
+        this.CCV = CCV;
+
+        return true;
     }
 
 

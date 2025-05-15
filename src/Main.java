@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -148,7 +147,26 @@ public class Main {
                             break;
                         case "3":
                             clientCurent.rezervareCamera();
-                            clientCurent.efectuarePlata();
+                            boolean plataReusita = false;
+                            while (!plataReusita) {
+                                System.out.println("Efectuare plata");
+                                System.out.print("Introdu numele de pe card: ");
+                                String nume = sc.nextLine();
+                                System.out.print("Introdu numar card: ");
+                                String nrCard = sc.nextLine();
+                                System.out.print("Introdu data expirare: ");
+                                String data = sc.nextLine();
+                                System.out.print("Introdu CCV: ");
+                                int ccv = sc.nextInt();
+                                sc.nextLine();
+
+                                if (clientCurent.efectuarePlata(nume, nrCard, data, ccv)) {
+                                    System.out.println("Plata a fost realizată cu succes.");
+                                    plataReusita = true;
+                                } else {
+                                    System.out.println("Plata nu a fost efectuata. Introdu iar datele.\n");
+                                }
+                            }
                             break;
                         case "4":
                             clientCurent.afisare();
