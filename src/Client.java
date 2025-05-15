@@ -16,4 +16,8 @@ public class Client extends Persoana{
         super.afisare();
         System.out.println("Tip Client: " + tip);
     }
+
+    public void rezervareCamera() {
+        System.out.println("Camera rezervata");
+    }
 }
