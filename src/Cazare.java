@@ -16,6 +16,7 @@ public class Cazare {
     private int nrFacilitati;
     private Camera[] camere;
     private int nrCamere;
+
     public Cazare(String nume, String adresa, String nrStele, String tip, int nrMasini, int nrAvioane) {
         this.nume = nume;
         this.adresa = adresa;
@@ -30,32 +31,39 @@ public class Cazare {
         nrCamere = 0;
         camere = new Camera[NR_MAX_CAMERE];
     }
+
     public boolean DispMasini() {
         if (nrMasini != 0)
             return true;
         else
             return false;
     }
+
     public boolean DispAvioane() {
         if (nrAvioane != 0)
             return true;
         else
             return false;
     }
+
     public void afisareMasini() {
         for (int i = 0; i < nrMasini; i++)
             System.out.println(masini.get(i));
     }
+
     public void afisareAvioane() {
         for (int i = 0; i < nrAvioane; i++)
             System.out.println(avioane.get(i));
     }
+
     public void adaugareFacilitati(Facilitati fac) {
         this.facilitati[nrFacilitati++] = fac;
     }
+
     public void adaugareCamere(Camera c) {
         this.camere[nrCamere++] = c;
     }
+
     public void stergereCamera(Camera c) {
         for (int i = 0; i < nrCamere; i++) {
             if (camere[i] == c) {
@@ -68,6 +76,7 @@ public class Cazare {
             }
         }
     }
+
     public void editeazaCamera(Camera c) {
         for (int i = 0; i < nrCamere; i++) {
             if (camere[i] == c) {
@@ -109,6 +118,7 @@ public class Cazare {
             }
         }
     }
+
     public void afisare() {
         System.out.println("Nume cazare: " + nume);
         System.out.println("Adresa cazare: " + adresa);
