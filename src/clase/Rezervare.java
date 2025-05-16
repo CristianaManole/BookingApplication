@@ -77,23 +77,12 @@ public class Rezervare {
         System.out.println("Rezervarea a fost actualizata cu succes!");
     }
 
-    public String getDataCheckin(){ 
-        return data_checkin; 
-    }
-    public String getDataCheckout(){ 
-        return data_checkout; 
-    }
+
     public int getNrPersoane(){ 
         return nrPersoane;   
     }
     public int getNrCamere(){ 
         return nrCamere;     
-    }
-    public float getPretTotal(){ 
-        return pretTotal;   
-    }
-    public ArrayList<Destinatie> getDestinatii(){ 
-        return destinatii; 
     }
 
     public void setDataCheckin(String data){
@@ -107,8 +96,5 @@ public class Rezervare {
     }
     public void setNrCamere(int nr){
         this.nrCamere = nr;   
-    }
-    public void setPretTotal(float pret){
-        this.pretTotal = pret; 
     }
 }

@@ -10,47 +10,74 @@ public class Angajat extends Persoana {
     private ArrayList<Destinatie> destinatii;
     private ArrayList<Rezervare> rezervari;
 
-    public Angajat(String nume, String prenume, char sex, String CNP, String telefon, TipAngajat tip) {
+    public Angajat(String nume, String prenume, char sex,
+                   String CNP, String telefon, TipAngajat tip,
+                   ArrayList<Destinatie> destinatiiGlobal) {
         super(nume, prenume, sex, CNP, telefon);
         this.tip = tip;
-        this.destinatii = new ArrayList<>();
+        this.destinatii = destinatiiGlobal;
         this.rezervari = new ArrayList<>();
     }
 
-    // ----- DESTINATII -----
-    public void AdaugaDestinatie(Destinatie d) {
+    private static boolean numeInvalid(String s) {
+        return s == null || s.trim().isEmpty() || !s.matches("[A-Za-zăâîșţĂÂÎȘŢ -]+");
+    }
+
+    public boolean AdaugaDestinatie(Destinatie d) {
+
+        if (d == null || numeInvalid(d.getTara()) || numeInvalid(d.getOras())) {
+            System.out.println("Date invalide pentru destinatie.");
+            return false;
+        }
+        // duplicat
+        boolean exista = destinatii.stream()
+                .anyMatch(x -> x.getOras().equalsIgnoreCase(d.getOras())
+                        && x.getTara().equalsIgnoreCase(d.getTara()));
+        if (exista) {
+            System.out.println("Destinatia exista deja.");
+            return false;
+        }
+
+        // daca totul e valid
         destinatii.add(d);
         System.out.println("Destinatia a fost adaugata.");
+        return true;
     }
 
-    public void StergeDestinatie(Destinatie d) {
-        if (!destinatii.contains(d)) {
-            System.out.println("Destinatia nu a fost gasita.");
-            return;
-        }
-        if (destinatii.remove(d))
+    public boolean StergeDestinatie(Destinatie d) {
+
+        //daca destinatia nu exista
+        if (d == null) { System.out.println("Destinatie nula."); return false; }
+
+        if (destinatii.remove(d)) {
             System.out.println("Destinatia a fost stearsa.");
-        else
-            System.out.println("Destinatia nu a fost gasita in lista.");
+            return true;
+        } else {
+            System.out.println("Destinatia nu a fost gasita.");
+            return false;
+        }
     }
 
-    public void EditeazaDestinatie(Destinatie d) {
 
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Vrei sa modifici tara destinatiei? (Y/N): ");
-        if (sc.nextLine().equalsIgnoreCase("Y")) {
-            System.out.print("Introdu noua tara: ");
-            d.setTara(sc.nextLine());
+    public boolean EditeazaDestinatie(Destinatie d, String taraNoua, String orasNou) {
+
+        if (d == null || !destinatii.contains(d))  return false;
+        boolean schimbat = false;
+
+        if (taraNoua != null && !taraNoua.trim().isEmpty()
+                && !numeInvalid(taraNoua)) {
+            d.setTara(taraNoua.trim());
+            schimbat = true;
         }
-        System.out.print("Vrei sa modifici orasul destinatiei? (Y/N): ");
-        if (sc.nextLine().equalsIgnoreCase("Y")) {
-            System.out.print("Introdu noul oras: ");
-            d.setOras(sc.nextLine());
+        if (orasNou != null && !orasNou.trim().isEmpty()
+                && !numeInvalid(orasNou)) {
+            d.setOras(orasNou.trim());
+            schimbat = true;
         }
-        System.out.println("Destinatia a fost actualizata.");
+        return schimbat;     // true dacă am facut macar o schimbare
     }
 
-    // ----- CAZARE -----
+
     public void AdaugaCazare(Destinatie destinatie, Cazare cazare) {
         destinatie.adaugaCazare(cazare);
         System.out.println("Cazare adaugata in destinatia " + destinatie.getOras());
@@ -106,7 +133,6 @@ public class Angajat extends Persoana {
         System.out.println("Cazarea a fost actualizata.");
     }
 
-    // ----- REZERVARI -----
     public void AdaugaRezervare(Rezervare r) {
         rezervari.add(r);
         System.out.println("Rezervarea a fost adaugata.");
@@ -199,14 +225,4 @@ public class Angajat extends Persoana {
     }
 
 
-
-    public TipAngajat getTip(){ 
-        return tip; 
-    }
-    public ArrayList<Destinatie> getDestinatii() { 
-        return destinatii; 
-    }
-    public ArrayList<Rezervare> getRezervari(){ 
-        return rezervari; 
-    }
 }

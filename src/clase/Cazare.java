@@ -51,7 +51,7 @@ public class Cazare {
     }
 
     public void afisareAvioane() {
-            System.out.println("Sunt disponibile " + NrBileteAvion + "bilete de avion");
+            System.out.println("Sunt disponibile " + NrBileteAvion + " bilete de avion");
     }
 
     public void adaugareFacilitati(Facilitati fac) {
@@ -126,6 +126,7 @@ public class Cazare {
             facilitati[i].afisare();
         for (int i = 0; i < nrCamere; i++)
             camere[i].afisare();
+        System.out.println("");
 
     }
     public int getNrMasini(){ return nrMasini; }

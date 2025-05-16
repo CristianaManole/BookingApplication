@@ -12,7 +12,6 @@ public class Main {
         clienti.add(persoana);
         clienti.add(client);
 
-        Angajat angajat = new Angajat("Georgescu", "Vasile", 'M', "1234567890123", "0744444444", TipAngajat.Administrator);
 
         ArrayList<Destinatie> destinatii = new ArrayList<>(List.of(
                 new Destinatie("Spania", "Barcelona"),
@@ -26,6 +25,9 @@ public class Main {
                 new Destinatie("Austria", "Viena"),
                 new Destinatie("Elvetia", "Zurich")
         ));
+        ArrayList<Angajat> angajati = new ArrayList<>();
+        Angajat angajat = new Angajat("Georgescu", "Vasile", 'M', "1234567890123", "0744444444", TipAngajat.Administrator, destinatii);
+        angajati.add(angajat);
 
         ArrayList<Cazare> cazari = new ArrayList<>();
         cazari.add(new Cazare("Hotel Barcelona", "Carrer de Mallorca 1, Barcelona", "4", "Hotel", 10, 2));
@@ -56,7 +58,7 @@ public class Main {
         }
         ArrayList<ArrayList<Camera>> camereCazare = new ArrayList<>();
 
-        for (int i = 0; i < cazari.size(); i++) {
+        for(int i = 0; i < cazari.size(); i++) {
             ArrayList<Camera> camere = new ArrayList<>();
             camere.add(new Camera(TipCamera.SINGLE, 100.0f));
             camere.add(new Camera(TipCamera.DOUBLE, 150.0f));
@@ -65,7 +67,7 @@ public class Main {
             camere.add(new Camera(TipCamera.SUITE,  250.0f));
 
             camereCazare.add(camere);
-            for (Camera c : camere) {             // fără lambda, deci fără restricţie
+            for (Camera c : camere) {
                 cazari.get(i).adaugareCamere(c);
             }
         }
@@ -92,59 +94,74 @@ public class Main {
                 break;
             }
 
-            if (s.equals("A")) {
-                /* autentificare */
+            if (s.equalsIgnoreCase("A")) {
+
                 Angajat angajatCurent = null;
-                System.out.print("Ai cont? (Y/N) ");
-                if (sc.nextLine().equalsIgnoreCase("Y")) {
-                    System.out.print("CNP: ");
-                    String cnp = sc.nextLine();
-                    if (angajat.getCNP().equals(cnp)) angajatCurent = angajat;
+                String raspuns;
+                do {
+                    System.out.print("Ai cont? (Y/N) ");
+                    raspuns = sc.nextLine().trim().toUpperCase();
+                } while (!raspuns.equals("Y") && !raspuns.equals("N"));
+
+                if (raspuns.equals("Y")) {
+                    System.out.print("Introdu CNP: ");
+                    String cnp = sc.nextLine().trim();
+
+                    for (Angajat a : angajati)
+                        if (a.getCNP().equals(cnp)) {
+                            angajatCurent = a;
+                            break;
+                        }
+
                     if (angajatCurent == null) {
-                        System.out.println("CNP incorect.");
+                        System.out.println("CNP incorect sau cont inexistent.");
                         continue;
                     }
+
                 } else {
-                    System.out.print("Nume: ");
-                    String n = sc.nextLine();
-                    System.out.print("Prenume: ");
-                    String p = sc.nextLine();
-                    System.out.print("Sex M/F: ");
-                    char sx = sc.nextLine().charAt(0);
-                    System.out.print("CNP: ");
+                    System.out.print("Nume angajat: ");
+                    String nume = sc.nextLine();
+                    System.out.print("Prenume angajat: ");
+                    String prenume = sc.nextLine();
+                    System.out.print("Sex (M/F): ");
+                    char sex = sc.nextLine().trim().toUpperCase().charAt(0);
+                    System.out.print("CNP angajat: ");
                     String cnp = sc.nextLine();
-                    System.out.print("Telefon: ");
+                    System.out.print("Telefon angajat: ");
                     String tel = sc.nextLine();
-                    System.out.print("Rol (Administrator/ManagerReceptie/AgentOferte): ");
+
                     TipAngajat rol;
-                    try {
-                        rol = TipAngajat.valueOf(sc.nextLine());
-                    } catch (IllegalArgumentException e) {
-                        System.out.println("Rol invalid.");
-                        continue;
+                    while (true) {
+                        System.out.print("Rol angajat (Administrator / ManagerReceptie / AgentOferte): ");
+                        String r = sc.nextLine().trim();
+                        try { rol = TipAngajat.valueOf(r); break; }
+                        catch (IllegalArgumentException e) { System.out.println("Rol invalid."); }
                     }
-                    angajatCurent = new Angajat(n, p, sx, cnp, tel, rol);
+
+                    angajatCurent = new Angajat(nume, prenume, sex, cnp, tel, rol, destinatii);
+                    angajati.add(angajatCurent);
+                    System.out.println("Cont de angajat creat cu succes.");
                 }
                 boolean ruleazaA = true;
                 while (ruleazaA) {
-                    System.out.println("\nMENIU ANGAJAT");
-                    System.out.println("1  Vezi destinatii");
-                    System.out.println("2  Adauga destinatie");
-                    System.out.println("3  Sterge destinatie");
-                    System.out.println("4  Editeaza destinatie");
-                    System.out.println("5  Adauga cazare");
-                    System.out.println("6  Sterge cazare (nume)");
-                    System.out.println("7  Editeaza cazare (nume)");
-                    System.out.println("8  Adauga camera");
-                    System.out.println("9  Sterge camera");
-                    System.out.println("10 Editeaza camera");
-                    System.out.println("11 Adauga facilitati");
-                    System.out.println("12 Adauga masina");
-                    System.out.println("13 Achizitioneaza masina");
-                    System.out.println("14 Achizitioneaza bilet avion");
-                    System.out.println("15 Valideaza vacanta");
-                    System.out.println("16 Modifica detalii vacanta");
-                    System.out.println("17 Log out");
+                    System.out.println("\n--- MENIU PRINCIPAL ---");
+                    System.out.println(" 1. Vezi destinatii");
+                    System.out.println(" 2. Adauga destinatie");
+                    System.out.println(" 3. Sterge destinatie");
+                    System.out.println(" 4. Editeaza destinatie");
+                    System.out.println(" 5. Adauga cazare");
+                    System.out.println(" 6. Sterge cazare ");
+                    System.out.println(" 7. Editeaza cazare ");
+                    System.out.println(" 8. Adauga camera");
+                    System.out.println(" 9. Sterge camera");
+                    System.out.println("10. Editeaza camera");
+                    System.out.println("11. Adauga facilitati");
+                    System.out.println("12. Adauga masina");
+                    System.out.println("13. Achizitioneaza masina");
+                    System.out.println("14. Achizitioneaza bilet avion");
+                    System.out.println("15. Valideaza vacanta");
+                    System.out.println("16. Modifica detalii vacanta");
+                    System.out.println("17. Log out");
                     System.out.print("Alege: ");
                     String optA = sc.nextLine();
 
@@ -153,321 +170,392 @@ public class Main {
                         case "1":
                             destinatii.forEach(Destinatie::afisareDestinatii);
                             break;
+                        /* Adauga destinatie */
                         case "2":
                             System.out.print("Introdu Tara: ");
                             String nt = sc.nextLine();
                             System.out.print("Introdu Oras: ");
                             String no = sc.nextLine();
                             Destinatie dn = new Destinatie(nt, no);
-                            destinatii.add(dn);
                             angajatCurent.AdaugaDestinatie(dn);
                             break;
-                        case "3":
-                            System.out.println("Destinatii existente:");
-                            destinatii.forEach(Destinatie::afisareDestinatii);
-                            System.out.print("Ce destinatie doresti sa stergi?: ");
-                            String orasDel = sc.nextLine();
-                            Destinatie dDel = destinatii.stream()
-                                    .filter(d -> d.getOras().equalsIgnoreCase(orasDel))
-                                    .findFirst().orElse(null);
-                            if (dDel != null) {
-                                angajatCurent.StergeDestinatie(dDel);
-                                destinatii.remove(dDel);
-                            } else System.out.println("Nu exista.");
-                            break;
-                        case "4":     // Editeaza destinatie
-                            System.out.println("Destinatii existente:");
-                            destinatii.forEach(Destinatie::afisareDestinatii);
-
-                            System.out.print("Ce oras alegi sa editezi?: ");
-                            String orasEd = sc.nextLine().trim();
-
-                            Destinatie dEd = destinatii.stream()
-                                    .filter(d -> d.getOras().trim()
-                                            .equalsIgnoreCase(orasEd))
-                                    .findFirst()
-                                    .orElse(null);
-
-                            if (dEd != null)
-                                angajatCurent.EditeazaDestinatie(dEd);
-                            else
-                                System.out.println("Nu exista destinatia.");
-                            break;
-
-                        case "5":   // Adaugă cazare
-                            System.out.println("Destinaţii disponibile:");
-                            destinatii.forEach(Destinatie::afisareDestinatii);
-
-                            System.out.print("Oras destinaţie: ");
-                            String orasCazNou = sc.nextLine();
-                            Destinatie destSelect = destinatii.stream()
-                                    .filter(d -> d.getOras().equalsIgnoreCase(orasCazNou))
-                                    .findFirst().orElse(null);
-                            if (destSelect == null) {
-                                System.out.println("Destinaţie inexistentă.");
+                        /* Sterge destinație */
+                        case "3": {
+                            if (destinatii.isEmpty()) {
+                                System.out.println("Nu există destinații.");
                                 break;
                             }
 
-                            System.out.print("Nume cazare: ");
-                            String numeC = sc.nextLine();
-                            System.out.print("Adresa: ");
-                            String adr = sc.nextLine();
-                            System.out.print("Stele: ");
-                            String st = sc.nextLine();
-                            System.out.print("Tip: ");
-                            String tip = sc.nextLine();
-                            System.out.print("Nr maşini: ");
-                            int nrM = Integer.parseInt(sc.nextLine());
-                            System.out.print("Nr bilete avion: ");
-                            int nrB = Integer.parseInt(sc.nextLine());
+                            System.out.println("Destinații disponibile:");
+                            for (int i = 0; i < destinatii.size(); i++)
+                                System.out.printf("%2d. %s%n", i + 1,
+                                        destinatii.get(i).getOras());
 
-                            Cazare cazNoua = new Cazare(numeC, adr, st, tip, nrM, nrB);
-                            angajatCurent.AdaugaCazare(destSelect, cazNoua);
-                            cazari.add(cazNoua);
-                            camereCazare.add(new ArrayList<>());                 // vector paralel
+                            System.out.print("Index destinație de șters: ");
+                            int idxDel = Integer.parseInt(sc.nextLine()) - 1;
+                            if (idxDel < 0 || idxDel >= destinatii.size()) {
+                                System.out.println("Index invalid.");
+                                break;
+                            }
+
+                            angajatCurent.StergeDestinatie(destinatii.get(idxDel));
                             break;
+                        }
 
-                        case "6":   // Şterge cazare
-                            System.out.println("Cazări existente:");
-                            cazari.forEach(Cazare::afisare);
+                        /*  Editeaza destinatie */
+                        case "4": {
+                            if (destinatii.isEmpty()) {
+                                System.out.println("Nu exista destinatii.");
+                                break;
+                            }
 
-                            System.out.print("Nume cazare: ");
-                            String numeSterg = sc.nextLine();
-                            Cazare czDeSters = cazari.stream()
-                                    .filter(c -> c.getNume().equalsIgnoreCase(numeSterg))
-                                    .findFirst()
-                                    .orElse(null);
-                            if (czDeSters == null) { System.out.println("Nu există cazarea."); break; }
+                            System.out.println("Destinatii disponibile:");
+                            for (int i = 0; i < destinatii.size(); i++) {
+                                System.out.print((i + 1) + ". ");
+                                destinatii.get(i).afisareDestinatii();   // afiseaza doar tara + oras
+                            }
 
-                            // cauți destinația care conține acea cazare
-                            Destinatie dPar = destinatii.stream()
-                                    .filter(d -> d.cazari.contains(czDeSters))
-                                    .findFirst()
-                                    .orElse(null);
+                            System.out.print("Index destinatie de editat: ");
+                            int idx = Integer.parseInt(sc.nextLine()) - 1;
+                            if (idx < 0 || idx >= destinatii.size()) {
+                                System.out.println("Index invalid.");
+                                break;
+                            }
 
-                            if (dPar != null)
-                                angajatCurent.StergeCazare(dPar, czDeSters);
+                            System.out.print("Noua tara (Enter pentru neschimbat): ");
+                            String taraNoua = sc.nextLine();
 
-                            cazari.remove(czDeSters);
-                            camereCazare.removeIf(list -> list == null || list.isEmpty()); // dacă ții paralelism
-                            System.out.println("Cazarea a fost ștearsă.");
+                            System.out.print("Noul oras (Enter pentru neschimbat): ");
+                            String orasNou = sc.nextLine();
+
+                            boolean ok = angajatCurent.EditeazaDestinatie(destinatii.get(idx), taraNoua, orasNou);
+                            System.out.println(ok ? "Destinatia a fost actualizata."
+                                    : "Nu s-a modificat nimic / date invalide.");
                             break;
+                        }
 
-                        case "7":   // Editează cazare
-                            System.out.println("Cazări existente:");
-                            cazari.forEach(Cazare::afisare);
+                        case "5":
+                            System.out.println("Destinații disponibile:");
+                            destinatii.forEach(Destinatie::afisareDestinatii);
 
-                            System.out.print("Nume cazare: ");
-                            String numeEdit = sc.nextLine();
-                            Cazare czEdit = cazari.stream()
-                                    .filter(c -> c.getNume().equalsIgnoreCase(numeEdit))
+                            System.out.print("Oraș destinație: ");
+                            String oras = sc.nextLine().trim();
+                            Destinatie dest = destinatii.stream()
+                                    .filter(d -> d.getOras().equalsIgnoreCase(oras))
                                     .findFirst().orElse(null);
-                            if (czEdit != null) angajatCurent.EditeazaCazare(czEdit);
-                            else System.out.println("Nu există cazarea.");
+
+                            if (dest == null) { System.out.println("Destinația nu există."); break; }
+
+                            // date cazare
+                            System.out.print("Nume cazare: ");   String nume = sc.nextLine();
+                            System.out.print("Adresa: ");        String adr  = sc.nextLine();
+                            System.out.print("Stele: ");         String st   = sc.nextLine();
+                            System.out.print("Tip: ");           String tip  = sc.nextLine();
+                            System.out.print("Nr mașini: ");     int nrM     = Integer.parseInt(sc.nextLine());
+                            System.out.print("Nr bilete avion: ");int nrB    = Integer.parseInt(sc.nextLine());
+
+                            Cazare cNoua = new Cazare(nume, adr, st, tip, nrM, nrB);
+                            angajatCurent.AdaugaCazare(dest, cNoua);
                             break;
 
-                        case "8":   // Adaugă cameră
-                            System.out.println("Cazări existente:");
-                            cazari.forEach(Cazare::afisare);
-
-                            System.out.print("Nume cazare: ");
-                            String numeAddCam = sc.nextLine();
-                            int idxAddCam = -1;
-                            for (int i = 0; i < cazari.size(); i++)
-                                if (cazari.get(i).getNume().equalsIgnoreCase(numeAddCam)) {
-                                    idxAddCam = i;
-                                    break;
+                        case "6": {
+                            ArrayList<Destinatie> destList = new ArrayList<>();
+                            ArrayList<Cazare>     cazList  = new ArrayList<>();
+                            for (Destinatie d : destinatii)
+                                for (Cazare c : d.cazari) {
+                                    destList.add(d);
+                                    cazList.add(c);
                                 }
 
-                            if (idxAddCam == -1) {
-                                System.out.println("Nu există.");
+                            if (cazList.isEmpty()) {
+                                System.out.println("Nu există cazări.");
+                                break;
+                            }
+
+                            System.out.println("Cazări existente:");
+                            for (int i = 0; i < cazList.size(); i++)
+                                System.out.printf("%2d. %s%n", i + 1, cazList.get(i).getNume());
+
+                            System.out.print("Index cazare de șters: ");
+                            int idx = Integer.parseInt(sc.nextLine()) - 1;
+                            if (idx < 0 || idx >= cazList.size()) {
+                                System.out.println("Index invalid.");
+                                break;
+                            }
+
+                            angajatCurent.StergeCazare(destList.get(idx), cazList.get(idx));
+                            break;
+                        }
+
+
+                        /* 7  Editează cazare */
+                        case "7": {
+                            ArrayList<Cazare> listaCazari = new ArrayList<>();
+                            for (Destinatie d : destinatii)
+                                listaCazari.addAll(d.cazari);
+
+                            if (listaCazari.isEmpty()) {
+                                System.out.println("Nu există nicio cazare în sistem.");
+                                break;
+                            }
+
+                            System.out.println("Cazări existente:");
+                            for (int i = 0; i < listaCazari.size(); i++)
+                                System.out.printf("%2d. %s%n", i + 1, listaCazari.get(i).getNume());
+
+                            System.out.print("Index cazare de editat: ");
+                            int idx = Integer.parseInt(sc.nextLine()) - 1;
+                            if (idx < 0 || idx >= listaCazari.size()) {
+                                System.out.println("Index invalid.");
+                                break;
+                            }
+
+                            angajatCurent.EditeazaCazare(listaCazari.get(idx));
+                            break;
+                        }
+
+
+                        /* Adauga camera */
+                        case "8": {
+                            if (cazari.isEmpty()) {
+                                System.out.println("Nu există cazări.");
+                                break;
+                            }
+
+                            System.out.println("Cazări disponibile:");
+                            for (int i = 0; i < cazari.size(); i++)
+                                System.out.printf("%2d. %s%n", i + 1, cazari.get(i).getNume());
+
+                            System.out.print("Alege index cazare: ");
+                            int idxAdd = Integer.parseInt(sc.nextLine()) - 1;
+                            if (idxAdd < 0 || idxAdd >= cazari.size()) {
+                                System.out.println("Index invalid.");
                                 break;
                             }
 
                             System.out.print("Tip (SINGLE/DOUBLE/TWIN/TRIPLE/SUITE): ");
-                            TipCamera tpCam = TipCamera.valueOf(sc.nextLine().toUpperCase());
-                            System.out.print("Preţ: ");
-                            float prCam = Float.parseFloat(sc.nextLine());
+                            TipCamera tipCam = TipCamera.valueOf(sc.nextLine().toUpperCase());
 
-                            Camera camNoua = new Camera(tpCam, prCam);
-                            camereCazare.get(idxAddCam).add(camNoua);
-                            cazari.get(idxAddCam).adaugareCamere(camNoua);
+                            System.out.print("Preţ: ");
+                            float pret = Float.parseFloat(sc.nextLine());
+
+                            Camera camNoua = new Camera(tipCam, pret);
+                            cazari.get(idxAdd).adaugareCamere(camNoua);
+                            camereCazare.get(idxAdd).add(camNoua);
                             System.out.println("Camera adăugată.");
                             break;
+                        }
 
-                        case "9":   // Şterge cameră
-                            System.out.println("Cazări existente:");
-                            cazari.forEach(c -> System.out.println(" • " + c.getNume()));
+                        /* Sterge camera */
+                        case "9": {
+                            if (cazari.isEmpty()) {
+                                System.out.println("Nu exista cazari.");
+                                break;
+                            }
 
-                            System.out.print("Nume cazare: ");
-                            String numeDelCam = sc.nextLine();
-                            int idxDelCam = -1;
+                            System.out.println("Cazari disponibile:");
                             for (int i = 0; i < cazari.size(); i++)
-                                if (cazari.get(i).getNume().equalsIgnoreCase(numeDelCam)) {
-                                    idxDelCam = i;
-                                    break;
-                                }
+                                System.out.printf("%2d. %s%n", i + 1, cazari.get(i).getNume());
 
-                            if (idxDelCam == -1) {
-                                System.out.println("Nu există.");
+                            System.out.print("Alege index cazare: ");
+                            int idxDel = Integer.parseInt(sc.nextLine()) - 1;
+                            if (idxDel < 0 || idxDel >= cazari.size()) {
+                                System.out.println("Index invalid.");
                                 break;
                             }
 
-                            ArrayList<Camera> listDel = camereCazare.get(idxDelCam);
-                            if (listDel.isEmpty()) {
-                                System.out.println("Nu are camere.");
+                            ArrayList<Camera> lista = camereCazare.get(idxDel);
+                            if (lista.isEmpty()) {
+                                System.out.println("Aceasta cazare nu are camere.");
                                 break;
                             }
 
-                            for (int i = 0; i < listDel.size(); i++) {
+                            for (int i = 0; i < lista.size(); i++) {
                                 System.out.print((i + 1) + ". ");
-                                listDel.get(i).afisare();
+                                lista.get(i).afisare();
                             }
-                            System.out.print("Index camera: ");
+
+                            System.out.print("Index camera de sters: ");
                             int iDel = Integer.parseInt(sc.nextLine()) - 1;
-                            if (iDel >= 0 && iDel < listDel.size()) {
-                                Camera cDel = listDel.remove(iDel);
-                                cazari.get(idxDelCam).stergereCamera(cDel);
-                                System.out.println("Camera ştearsă.");
-                            } else System.out.println("Index invalid.");
+                            if (iDel < 0 || iDel >= lista.size()) {
+                                System.out.println("Index invalid.");
+                                break;
+                            }
+
+                            Camera camDel = lista.remove(iDel);
+                            cazari.get(idxDel).stergereCamera(camDel);
+                            System.out.println("Camera ştearsă.");
                             break;
+                        }
 
-                        case "10":  // Editează cameră
-                            System.out.println("Cazări existente:");
-                            cazari.forEach(c -> System.out.println(" • " + c.getNume()));
-
-                            System.out.print("Nume cazare: ");
-                            String numeEdCam = sc.nextLine();
-                            int idxEdCam = -1;
+                        /* Editeaza camera */
+                        case "10": {
+                            if (cazari.isEmpty()) {
+                                System.out.println("Nu exista cazari.");
+                                break;
+                            }
+                            System.out.println("Cazari disponibile:");
                             for (int i = 0; i < cazari.size(); i++)
-                                if (cazari.get(i).getNume().equalsIgnoreCase(numeEdCam)) {
-                                    idxEdCam = i;
-                                    break;
-                                }
+                                System.out.printf("%2d. %s%n", i + 1, cazari.get(i).getNume());
 
-                            if (idxEdCam == -1) {
-                                System.out.println("Nu există.");
-                                break;
-                            }
-
-                            ArrayList<Camera> listEd = camereCazare.get(idxEdCam);
-                            if (listEd.isEmpty()) {
-                                System.out.println("Nu are camere.");
-                                break;
-                            }
-
-                            for (int i = 0; i < listEd.size(); i++) {
-                                System.out.print((i + 1) + ". ");
-                                listEd.get(i).afisare();
-                            }
-                            System.out.print("Index camera: ");
-                            int iEd = Integer.parseInt(sc.nextLine()) - 1;
-                            if (iEd >= 0 && iEd < listEd.size())
-                                cazari.get(idxEdCam).editeazaCamera(listEd.get(iEd));
-                            else
+                            System.out.print("Alege index cazare: ");
+                            int idxCaz = Integer.parseInt(sc.nextLine()) - 1;
+                            if (idxCaz < 0 || idxCaz >= cazari.size()) {
                                 System.out.println("Index invalid.");
-                            break;
-                        case "11":      // Adaugă facilități
-                            System.out.println("Cazări existente:");
-                            cazari.forEach(Cazare::afisare);
-
-                            System.out.print("Nume cazare: ");
-                            String numeFac = sc.nextLine();
-                            Cazare czFac = cazari.stream()
-                                    .filter(c -> c.getNume().equalsIgnoreCase(numeFac))
-                                    .findFirst().orElse(null);
-
-                            if (czFac == null) {
-                                System.out.println("Nu există.");
                                 break;
                             }
 
-                            System.out.print("Facilități (Piscina,Spa,Parcare,…) separate prin virgulă: ");
+                            ArrayList<Camera> listaCam = camereCazare.get(idxCaz);
+                            if (listaCam.isEmpty()) {
+                                System.out.println("Aceasta cazare nu are camere.");
+                                break;
+                            }
+
+                            for (int i = 0; i < listaCam.size(); i++) {
+                                System.out.print((i + 1) + ". ");
+                                listaCam.get(i).afisare();
+                            }
+
+                            System.out.print("Index camera de editat: ");
+                            int idxCam = Integer.parseInt(sc.nextLine()) - 1;
+                            if (idxCam < 0 || idxCam >= listaCam.size()) {
+                                System.out.println("Index invalid.");
+                                break;
+                            }
+                            cazari.get(idxCaz).editeazaCamera(listaCam.get(idxCam));
+                            break;
+                        }
+
+                        /*  Adaugă facilitati */
+                        case "11": {
+                            if (cazari.isEmpty()) {
+                                System.out.println("Nu exista cazari.");
+                                break;
+                            }
+
+                            System.out.println("Cazari disponibile:");
+                            for (int i = 0; i < cazari.size(); i++)
+                                System.out.printf("%2d. %s%n", i + 1, cazari.get(i).getNume());
+
+                            System.out.print("Alege index cazare: ");
+                            int idx = Integer.parseInt(sc.nextLine()) - 1;
+                            if (idx < 0 || idx >= cazari.size()) {
+                                System.out.println("Index invalid.");
+                                break;
+                            }
+
+                            Cazare cz = cazari.get(idx);
+
+                            System.out.println("\nDetalii cazare selectata:");
+                            cz.afisare();
+
+                            System.out.println("\nFacilitati disponibile:");
+                            TipFacilitati[] opt = TipFacilitati.values();
+                            for (int i = 0; i < opt.length; i++)
+                                System.out.printf("%d. %s%n", i + 1, opt[i]);
+
+                            System.out.print(
+                                    "\nIntrodu facilitatile dorite: ");
                             String[] tok = sc.nextLine().split(",");
-                            ArrayList<TipFacilitati> lf = new ArrayList<>();
-                            for (String f : tok)
+
+                            ArrayList<TipFacilitati> listaFac = new ArrayList<>();
+
+                            for (String token : tok) {
+                                String fac = token.trim();
+                                if (fac.isEmpty()) continue;
                                 try {
-                                    lf.add(TipFacilitati.valueOf(f.trim()));
+                                    int nr = Integer.parseInt(fac);
+                                    if (nr >= 1 && nr <= opt.length)
+                                        listaFac.add(opt[nr - 1]);
+                                    continue;
+                                } catch (NumberFormatException ignored) {  }
+
+                                try {
+                                    listaFac.add(TipFacilitati.valueOf(fac));
                                 } catch (IllegalArgumentException ignored) {
+                                    System.out.println("Facilitate necunoscuta: " + fac);
                                 }
-                            czFac.adaugareFacilitati(new Facilitati(lf));
-                            break;
-                        case "12":      // Adaugă maşină
-                            System.out.println("Cazări existente:");
-                            cazari.forEach(c -> System.out.println(" • " + c.getNume()));
+                            }
 
-                            System.out.print("Nume cazare: ");
-                            String numeMasAdd = sc.nextLine();
-                            Cazare czMasAdd = cazari.stream()
-                                    .filter(c -> c.getNume().equalsIgnoreCase(numeMasAdd))
-                                    .findFirst().orElse(null);
-
-                            if (czMasAdd == null) {
-                                System.out.println("Nu există această cazare.");
+                            if (listaFac.isEmpty()) {
+                                System.out.println("Nu s-a adaugat nicio facilitate valida.");
                                 break;
                             }
 
-                            System.out.print("Marca maşină: ");
-                            String marcaAdd = sc.nextLine();
-                            angajatCurent.AdaugaMasina(marcaAdd, czMasAdd);          // ← apel din Angajat
+                            cz.adaugareFacilitati(new Facilitati(listaFac));
+                            System.out.println("Facilitati adaugate.");
                             break;
+                        }
 
-                        case "13":      // Achiziţionează (scoate) maşină
-                            System.out.println("Cazări existente:");
-                            cazari.forEach(c -> System.out.println(" • " + c.getNume()));
+                        /* 12 Adauga mașina */
+                        case "12": {
+                            if (cazari.isEmpty()) { System.out.println("Nu există cazări."); break; }
 
-                            System.out.print("Nume cazare: ");
-                            String numeMasRem = sc.nextLine();
-                            Cazare czMasRem = cazari.stream()
-                                    .filter(c -> c.getNume().equalsIgnoreCase(numeMasRem))
-                                    .findFirst().orElse(null);
+                            System.out.println("Cazari disponibile:");
+                            for (int i = 0; i < cazari.size(); i++)
+                                System.out.printf("%2d. %s%n", i + 1, cazari.get(i).getNume());
 
-                            if (czMasRem == null) {
-                                System.out.println("Nu există această cazare.");
+                            System.out.print("Alege index cazare: ");
+                            int idxMasAdd = Integer.parseInt(sc.nextLine()) - 1;
+                            if (idxMasAdd < 0 || idxMasAdd >= cazari.size()) {
+                                System.out.println("Index invalid."); break;
+                            }
+
+                            System.out.print("Marcă mașina de adaugat: ");
+                            String marcaAdd = sc.nextLine().trim();
+
+                            angajatCurent.AdaugaMasina(marcaAdd, cazari.get(idxMasAdd));
+                            break;
+                        }
+
+                        /*  Achiziționează mașina */
+                        case "13": {
+                            if (cazari.isEmpty()) { System.out.println("Nu exista cazari."); break; }
+
+                            System.out.println("Cazari disponibile:");
+                            for (int i = 0; i < cazari.size(); i++)
+                                System.out.printf("%2d. %s%n", i + 1, cazari.get(i).getNume());
+
+                            System.out.print("Alege index cazare: ");
+                            int idxMasRem = Integer.parseInt(sc.nextLine()) - 1;
+                            if (idxMasRem < 0 || idxMasRem >= cazari.size()) {
+                                System.out.println("Index invalid."); break;
+                            }
+
+                            System.out.print("Marcă mașina de scos: ");
+                            String marcaRem = sc.nextLine().trim();
+
+                            angajatCurent.AchizitionareMasina(marcaRem, cazari.get(idxMasRem));
+                            break;
+                        }
+
+                        /*  Achizitioneaza bilet avion */
+                        case "14": {
+
+                            ArrayList<Cazare> toate = new ArrayList<>();
+                            for (Destinatie d : destinatii)
+                                toate.addAll(d.cazari);
+
+                            if (toate.isEmpty()) {
+                                System.out.println("Nu exista nicio cazare în sistem.");
                                 break;
                             }
 
-                            System.out.print("Marca maşină de scos: ");
-                            String marcaRem = sc.nextLine();
-                            angajatCurent.AchizitionareMasina(marcaRem, czMasRem);   // ← apel din Angajat
-                            break;
-
-                        case "14":      // Achiziţionează bilet avion
-                            System.out.println("Cazări şi bilete de avion disponibile:");
-                            cazari.forEach(c -> {
-                                System.out.print(" • " + c.getNume() + " → ");
+                            System.out.println("Cazari si bilete de avion disponibile:");
+                            for (int i = 0; i < toate.size(); i++) {
+                                Cazare c = toate.get(i);
+                                System.out.printf("%2d. %s → ", i + 1, c.getNume());
                                 c.afisareAvioane();
-                            });
-
-                            System.out.print("Nume cazare: ");
-                            String numeAv = sc.nextLine();
-                            Cazare czAv = cazari.stream()
-                                    .filter(c -> c.getNume().equalsIgnoreCase(numeAv))
-                                    .findFirst().orElse(null);
-
-                            if (czAv != null)
-                                angajatCurent.AchizitionareAvion(czAv);              // ← apel din Angajat
-                            else
-                                System.out.println("Nu există această cazare.");
-                            break;
-
-                        case "15":      // Validează o vacanţă
-                            if (angajatCurent.getRezervari().isEmpty()) {
-                                System.out.println("Nu există rezervări.");
-                                break;
                             }
-                            for (int i = 0; i < angajatCurent.getRezervari().size(); i++) {
-                                System.out.print((i + 1) + ". ");
-                                angajatCurent.getRezervari().get(i).afisare();
-                            }
-                            System.out.print("Index rezervare: ");
-                            int idxVal = Integer.parseInt(sc.nextLine()) - 1;
-                            if (idxVal >= 0 && idxVal < angajatCurent.getRezervari().size())
-                                angajatCurent.ValideazaVacanta(angajatCurent.getRezervari().get(idxVal));  // ← apel
-                            else
-                                System.out.println("Index invalid.");
+
+                            System.out.print("Alege index cazare: ");
+                            int idx = Integer.parseInt(sc.nextLine()) - 1;
+                            if (idx < 0 || idx >= toate.size()) { System.out.println("Index invalid."); break; }
+
+                            angajatCurent.AchizitionareAvion(toate.get(idx));
                             break;
-                        case "16":      // Modifică detalii vacanţă după numele rezervării
+                        }
+
 
                         case "17":      // Log out angajat
                             System.out.println("Te-ai delogat cu succes din contul de angajat.");
