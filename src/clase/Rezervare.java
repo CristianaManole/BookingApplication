@@ -11,6 +11,7 @@ public class Rezervare {
     private int    nrPersoane;
     private int    nrCamere;
     private float  pretTotal;
+    private boolean verificat;
     private ArrayList<Destinatie> destinatii;
 
     public Rezervare() {
@@ -29,20 +30,22 @@ public class Rezervare {
         this.nrPersoane = nrPersoane;
         this.nrCamere   = nrCamere;
         this.pretTotal  = min + random.nextFloat() * (max - min);
+        this.verificat = false;
         this.destinatii = new ArrayList<>();
     }
 
     public void addDestinatie(Destinatie d) { destinatii.add(d); }
 
     public void afisare() {
+        String verific_text = this.verificat ? "Verificat" : "In curs de verificare";
         System.out.println("Check-in: " + data_checkin +
-                           ", Check-out: " + data_checkout +
-                           ", Persoane: " + nrPersoane +
-                           ", Camere: "   + nrCamere +
-                           ", Pret total: " + pretTotal);
+                ", Check-out: " + data_checkout +
+                ", Persoane: " + nrPersoane +
+                ", Camere: " + nrCamere +
+                ", Pret total: " + pretTotal +
+                ", Stadiu: " + verific_text);
         for (Destinatie d : destinatii) d.afisare();
     }
-
     public void actualizareRezervare() {
         Scanner s = new Scanner(System.in);
 
@@ -84,7 +87,15 @@ public class Rezervare {
     public int getNrCamere(){ 
         return nrCamere;     
     }
-
+    public float getPretTotal(){
+        return pretTotal;
+    }
+    public String getDataCheckin(){
+        return data_checkin;
+    }
+    public String getDataCheckout(){
+        return data_checkout;
+    }
     public void setDataCheckin(String data){
         this.data_checkin  = data; 
     }
@@ -97,4 +108,14 @@ public class Rezervare {
     public void setNrCamere(int nr){
         this.nrCamere = nr;   
     }
+    public void setPretTotal(float Pret){
+        this.pretTotal = Pret;
+    }
+    public void set_confirmed(){
+        this.verificat =  true;
+    }
+    public boolean confirmed(){
+        return this.verificat;
+    }
+
 }

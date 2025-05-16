@@ -144,58 +144,68 @@ public class Angajat extends Persoana {
         else
             System.out.println("Rezervarea nu a fost gasita.");
     }
+    public ArrayList<Rezervare> getRezervari(boolean active){
+        ArrayList<Rezervare> returnArray= new ArrayList<>();
+        if(this.rezervari.isEmpty()){
+            return returnArray;
+        }
+        for (Rezervare r : rezervari){
+            if(r.confirmed() == active){
+                returnArray.add(r);
+            }
+        }
+        return returnArray;
 
-    public void ModificaDetaliiVacanta(Rezervare r) {
+    }
+    public boolean ModificaDetaliiVacanta(Rezervare r, Integer nrPersoaneNou, Integer nrCamereNou,
+                                          LocalDate checkInNou, LocalDate checkOutNou) {
         if (!rezervari.contains(r)) {
             System.out.println("Rezervarea nu se gaseste in lista angajatului.");
-            return;
+            return false;
         }
-        Scanner sc = new Scanner(System.in);
-        // nr de persoane
-        System.out.print("Vrei sa modifici nr. persoane? (Y/N): ");
-        if (sc.nextLine().equalsIgnoreCase("Y")) {
-            System.out.print("Introdu noul numar: ");
-            try {
-                int n = Integer.parseInt(sc.nextLine());
-                if (n > 0) r.setNrPersoane(n);
-                else System.out.println("Nr invalid!");
-            } catch (NumberFormatException e) { System.out.println("Format invalid!"); }
+
+        // Validare număr persoane
+        if (nrPersoaneNou != null) {
+            if (nrPersoaneNou > 0) {
+                r.setNrPersoane(nrPersoaneNou);
+            } else {
+                System.out.println("Nr persoane invalid!");
+                return false;
+            }
         }
-        // nr de camere
-        System.out.print("Vrei sa modifici nr. camere? (Y/N): ");
-        if (sc.nextLine().equalsIgnoreCase("Y")) {
-            System.out.print("Introdu noul numar: ");
-            try {
-                int n = Integer.parseInt(sc.nextLine());
-                if (n > 0) r.setNrCamere(n);
-                else System.out.println("Nr invalid!");
-            } catch (NumberFormatException e) { System.out.println("Format invalid!"); }
+
+        // Validare număr camere
+        if (nrCamereNou != null) {
+            if (nrCamereNou > 0) {
+                r.setNrCamere(nrCamereNou);
+            } else {
+                System.out.println("Nr camere invalid!");
+                return false;
+            }
         }
-        // datele de check-in si check-out
-        LocalDate checkIn = null, checkOut = null;
-        System.out.print("Vrei sa modifici data check-in? (Y/N): ");
-        if (sc.nextLine().equalsIgnoreCase("Y")) {
-            System.out.print("Introdu data (YYYY-MM-DD): ");
-            try { checkIn = LocalDate.parse(sc.nextLine()); }
-            catch (DateTimeParseException e) { System.out.println("Data invalida!"); }
+
+        // Validare date check-in / check-out
+        if (checkInNou != null && checkOutNou != null) {
+            if (checkOutNou.isAfter(checkInNou)) {
+                r.setDataCheckin(checkInNou.toString());
+                r.setDataCheckout(checkOutNou.toString());
+            } else {
+                System.out.println("Check-out trebuie sa fie dupa check-in!");
+                return false;
+            }
+        } else if (checkInNou != null || checkOutNou != null) {
+            // unul este null, altul nu => combinație incompletă
+            System.out.println("Ambele date check-in și check-out trebuie completate împreună.");
+            return false;
         }
-        System.out.print("Vrei sa modifici data check-out? (Y/N): ");
-        if (sc.nextLine().equalsIgnoreCase("Y")) {
-            System.out.print("Introdu data (YYYY-MM-DD): ");
-            try { checkOut = LocalDate.parse(sc.nextLine()); }
-            catch (DateTimeParseException e) { System.out.println("Data invalida!"); }
-        }
-        if (checkIn != null && checkOut != null) {
-            if (checkOut.isAfter(checkIn)) {
-                r.setDataCheckin(checkIn.toString());
-                r.setDataCheckout(checkOut.toString());
-            } else System.out.println("Check-out trebuie sa fie dupa check-in!");
-        }
+
         System.out.println("Detaliile rezervarii au fost actualizate.");
+        return true;
     }
 
     public void ValideazaVacanta(Rezervare r) {
         boolean valida = r.getNrPersoane() > 0 && r.getNrCamere() > 0;
+        r.set_confirmed();
         System.out.println(valida ? "Rezervare VALIDA." : "Rezervare INVALIDA.");
     }
     public void AdaugaMasina(String marca, Cazare c) {

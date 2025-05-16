@@ -1,4 +1,7 @@
 package clase;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -7,6 +10,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         ArrayList<Client> clienti = new ArrayList<>();
+        ArrayList<Rezervare> waitinglist = new ArrayList<>();
         Client persoana = new Client("Popescu", "Ion", 'M', "1234567890123", "0722222222", TipClient.TURIST);
         Client client = new Client("Ionescu", "Maria", 'F', "1234567890123", "0733333333", TipClient.CUPLU);
         clienti.add(persoana);
@@ -555,8 +559,99 @@ public class Main {
                             angajatCurent.AchizitionareAvion(toate.get(idx));
                             break;
                         }
+                        case "15":      // Validează o vacanţă
+                            for (Rezervare r : waitinglist) {
+                                angajatCurent.AdaugaRezervare(r);
+                            }
+                            if (angajatCurent.getRezervari(false).isEmpty()) {
+                                System.out.println("Nu există rezervări.");
+                                break;
+                            }
+                            for (int i = 0; i < angajatCurent.getRezervari(false).size(); i++) {
+                                System.out.print((i + 1) + ". ");
+                                angajatCurent.getRezervari(false).get(i).afisare();
+                            }
+                            System.out.print("Index rezervare: ");
+                            int idxVal = Integer.parseInt(sc.nextLine()) - 1;
+                            if (idxVal >= 0 && idxVal < angajatCurent.getRezervari(false).size())
+                                angajatCurent.ValideazaVacanta(angajatCurent.getRezervari(false).get(idxVal));  // ← apel
+                            else
+                                System.out.println("Index invalid.");
+                            break;
+                        case "16":      // Modifică detalii vacanţă
+                            if (angajatCurent.getRezervari(true).isEmpty()) {
+                                System.out.println("Nu există vacanţe planificate şi validate.");
+                                break;
+                            }
 
+                            for (int i = 0; i < angajatCurent.getRezervari(true).size(); i++) {
+                                System.out.print((i + 1) + ". ");
+                                angajatCurent.getRezervari(true).get(i).afisare();
+                            }
 
+                            System.out.print("Index rezervare de modificat: ");
+                            int idxValVerificare = Integer.parseInt(sc.nextLine()) - 1;
+                            if (idxValVerificare < 0 ||
+                                    idxValVerificare >= angajatCurent.getRezervari(true).size()) {
+                                System.out.println("Index invalid.");
+                                break;
+                            }
+
+                            Rezervare rezMod = angajatCurent.getRezervari(true).get(idxValVerificare);
+
+                            System.out.print("Vrei sa modifici nr. persoane? (Y/N): ");
+                            Integer nrPersoaneNou = rezMod.getNrPersoane();
+                            if (sc.nextLine().equalsIgnoreCase("Y")) {
+                                System.out.print("Introdu noul numar: ");
+                                try {
+                                    int n = Integer.parseInt(sc.nextLine());
+                                    if (n > 0) nrPersoaneNou = n;
+                                    else System.out.println("Nr invalid!");
+                                } catch (NumberFormatException e) {
+                                    System.out.println("Format invalid!");
+                                }
+                            }
+
+                            System.out.print("Vrei sa modifici nr. camere? (Y/N): ");
+                            Integer nrCamereNou = rezMod.getNrCamere();
+                            if (sc.nextLine().equalsIgnoreCase("Y")) {
+                                System.out.print("Introdu noul numar: ");
+                                try {
+                                    int n = Integer.parseInt(sc.nextLine());
+                                    if (n > 0) nrCamereNou = n;
+                                    else System.out.println("Nr invalid!");
+                                } catch (NumberFormatException e) {
+                                    System.out.println("Format invalid!");
+                                }
+                            }
+
+                            System.out.print("Vrei sa modifici data check-in? (Y/N): ");
+                            LocalDate checkInNou = LocalDate.parse(rezMod.getDataCheckout(), DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+                            if (sc.nextLine().equalsIgnoreCase("Y")) {
+                                System.out.print("Introdu data (YYYY-MM-DD): ");
+                                try {
+                                    checkInNou = LocalDate.parse(sc.nextLine());
+                                } catch (DateTimeParseException e) {
+                                    System.out.println("Data invalida!");
+                                }
+                            }
+
+                            System.out.print("Vrei sa modifici data check-out? (Y/N): ");
+                            LocalDate checkOutNou = LocalDate.parse(rezMod.getDataCheckout(), DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+                            if (sc.nextLine().equalsIgnoreCase("Y")) {
+                                System.out.print("Introdu data (YYYY-MM-DD): ");
+                                try {
+                                    checkOutNou = LocalDate.parse(sc.nextLine());
+                                } catch (DateTimeParseException e) {
+                                    System.out.println("Data invalida!");
+                                }
+                            }
+
+// 🔧 Apelul final refactorizat
+                            angajatCurent.ModificaDetaliiVacanta(rezMod, nrPersoaneNou, nrCamereNou, checkInNou, checkOutNou);
+
+                            System.out.println("Rezervarea a fost actualizată.");
+                            break;
                         case "17":      // Log out angajat
                             System.out.println("Te-ai delogat cu succes din contul de angajat.");
                             ruleazaA = false;        // iese din meniul angajat şi revine la meniul principal
@@ -654,6 +749,7 @@ public class Main {
 
                                 if (clientCurent.rezervareCamera(tara1, oras1, dataCheckIn, dataCheckOut, nrPers, nrCam)) {
                                     System.out.println("Rezervarea a fost realizata cu succes.");
+                                    waitinglist.add(clientCurent.getRezervari().getLast());
                                     rezervareReusita = true;
                                 } else {
                                     System.out.println("Date invalide. Incercați din nou.\n");
