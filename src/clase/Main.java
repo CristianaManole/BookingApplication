@@ -66,7 +66,7 @@ public class Main {
 
         boolean aplicatieDeschisa = true;
         while (aplicatieDeschisa) {
-            System.out.println("Esti client sau angajat? (C/A) Sau tasteaza X pentru a iesi din aplicatie.");
+            System.out.print("Esti client sau angajat? (C/A) Sau tasteaza X pentru a iesi din aplicatie.");
             String s = sc.nextLine();
 
             if (s.equalsIgnoreCase("X")) {
@@ -103,7 +103,7 @@ public class Main {
                     for (Client c : clienti) {
                         if (c.getCNP().equals(cnp)) {
                             clientCurent = c;
-                            System.out.println("Autentificare reușită.");
+                            System.out.println("Autentificare reușita.");
                             break;
                         }
                     }
@@ -117,16 +117,16 @@ public class Main {
                 boolean ruleaza = true;
                 while (ruleaza) {
                     System.out.println("\n--- MENIU PRINCIPAL ---");
-                    System.out.println("1. Vizualizează destinațiile disponibile");
-                    System.out.println("2. Caută hoteluri");
-                    System.out.println("3. Rezervă cameră");
-                    System.out.println("4. Vezi rezervările tale");
-                    System.out.println("5. Modifică o rezervare");
-                    System.out.println("6. Anulează o rezervare");
+                    System.out.println("1. Vizualizeaza destinatiile disponibile");
+                    System.out.println("2. Cauta hoteluri");
+                    System.out.println("3. Rezerva camera");
+                    System.out.println("4. Vezi rezervarile tale");
+                    System.out.println("5. Modifica o rezervare");
+                    System.out.println("6. Anuleaza o rezervare");
                     System.out.println("7. Scrie feedback");
                     System.out.println("8. Log out");
-                    System.out.println("0. Ieșire aplicație");
-                    System.out.print("Alege o opțiune: ");
+                    System.out.println("0. Iesire aplicatie");
+                    System.out.print("Alege o optiune: ");
                     String opt = sc.nextLine();
 
                     switch (opt) {
@@ -136,9 +136,9 @@ public class Main {
                             }
                             break;
                         case "2":
-                            System.out.print("Introdu țara: ");
+                            System.out.print("Introduceti tara: ");
                             String tara = sc.nextLine();
-                            System.out.print("Introdu orașul: ");
+                            System.out.print("Introduceti orașul: ");
                             String oras = sc.nextLine();
                             for (Destinatie d : destinatii) {
                                 if (d.getTara().equalsIgnoreCase(tara) && d.getOras().equalsIgnoreCase(oras)) {
@@ -147,7 +147,33 @@ public class Main {
                             }
                             break;
                         case "3":
-                            clientCurent.rezervareCamera();
+                            boolean rezervareReusita = false;
+                            while (!rezervareReusita) {
+                                System.out.println("Unde doresti să mergi?");
+
+                                System.out.print("Introduceti tara: ");
+                                String tara1 = sc.nextLine();
+                                System.out.print("Introduceti orasul: ");
+                                String oras1 = sc.nextLine();
+                                System.out.print("Introduceti data check-in (dd.MM.yyyy): ");
+                                String dataCheckIn = sc.nextLine();
+                                System.out.print("Introduceti data check-out (dd.MM.yyyy): ");
+                                String dataCheckOut = sc.nextLine();
+                                System.out.print("Introduceti numarul de persoane: ");
+                                int nrPers = sc.nextInt();
+                                System.out.print("Introduceti numarul de camere: ");
+                                int nrCam = sc.nextInt();
+                                sc.nextLine();
+
+                                if (clientCurent.rezervareCamera(tara1, oras1, dataCheckIn, dataCheckOut, nrPers, nrCam)) {
+                                    System.out.println("Rezervarea a fost realizata cu succes.");
+                                    rezervareReusita = true;
+                                } else {
+                                    System.out.println("Date invalide. Incercați din nou.\n");
+                                }
+                            }
+
+                            // Aici se va face plata
                             boolean plataReusita = false;
                             while (!plataReusita) {
                                 System.out.println("Efectuare plata");
@@ -168,6 +194,7 @@ public class Main {
                                     System.out.println("Plata nu a fost efectuata. Introdu iar datele.\n");
                                 }
                             }
+                            System.out.println("Rezervarea a fost efectuată cu succes!");
                             break;
                         case "4":
                             clientCurent.afisare();
@@ -175,7 +202,7 @@ public class Main {
                         case "5":
                             ArrayList<Rezervare> rezervari = clientCurent.getRezervari();
                             if (rezervari.isEmpty()) {
-                                System.out.println("Nu ai rezervări.");
+                                System.out.println("Nu ai rezervari.");
                                 break;
                             }
                             for (int i = 0; i < rezervari.size(); i++) {
@@ -193,7 +220,7 @@ public class Main {
                         case "6":
                             rezervari = clientCurent.getRezervari();
                             if (rezervari.isEmpty()) {
-                                System.out.println("Nu ai rezervări.");
+                                System.out.println("Nu ai rezervari.");
                                 break;
                             }
                             for (int i = 0; i < rezervari.size(); i++) {
@@ -204,7 +231,7 @@ public class Main {
                             int index = Integer.parseInt(sc.nextLine());
                             if (index >= 1 && index <= rezervari.size()) {
                                 rezervari.remove(index - 1);
-                                System.out.println("Rezervarea a fost anulată.");
+                                System.out.println("Rezervarea a fost anulata.");
                             } else {
                                 System.out.println("Index invalid.");
                             }
@@ -224,7 +251,7 @@ public class Main {
                             aplicatieDeschisa = false;
                             break;
                         default:
-                            System.out.println("Opțiune invalidă.");
+                            System.out.println("Opțiune invalida.");
                     }
                 }
             }

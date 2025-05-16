@@ -1,6 +1,9 @@
 package clase;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class Client extends Persoana{
     private TipClient tip;
@@ -21,31 +24,27 @@ public class Client extends Persoana{
         return rezervari;
     }
 
-    public void rezervareCamera() {
-        Rezervare rez;
-        Scanner s = new Scanner(System.in);
+    public boolean rezervareCamera(String tara, String oras, String dataCheckIn, String dataCheckOut, int nrPersoane, int nrCamere) {
+        if (tara == null || tara.trim().isEmpty()) return false;
+        if (oras == null || oras.trim().isEmpty()) return false;
 
-        System.out.println("Unde dorești să mergi?");
-        System.out.print("Introduceți țara: ");
-        String tara = s.nextLine();
-        System.out.print("Introduceți orașul: ");
-        String oras = s.nextLine();
+        LocalDate checkIn, checkOut;
 
-        System.out.print("Introdu data de check-in: ");
-        String dc = s.nextLine();
-        System.out.print("Introdu data de check-out: ");
-        String dc2 = s.nextLine();
-        System.out.print("Introdu nr de persoane: ");
-        int nrp = s.nextInt();
-        System.out.print("Introdu nr de camere: ");
-        int nrc = s.nextInt();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        try {
+            checkIn = LocalDate.parse(dataCheckIn, formatter);
+            checkOut = LocalDate.parse(dataCheckOut, formatter);
+            if (checkOut.isBefore(checkIn)) return false;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+        if (nrPersoane <= 0 || nrCamere <= 0) return false;
 
-        rez = new Rezervare(dc, dc2, nrp, nrc);
+        Rezervare rez = new Rezervare(dataCheckIn, dataCheckOut, nrPersoane, nrCamere);
         Destinatie destinatie = new Destinatie(tara, oras);
         rez.addDestinatie(destinatie);
         rezervari.add(rez);
-
-        System.out.println("Rezervare realizată cu succes.");
+        return true;
     }
 
     public boolean efectuarePlata(String numeCard, String nrcard, String dataExpirare, int CCV) {
@@ -70,7 +69,6 @@ public class Client extends Persoana{
 
         return true;
     }
-
 
     @Override
     public void afisare() {
