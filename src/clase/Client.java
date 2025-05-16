@@ -34,7 +34,11 @@ public class Client extends Persoana{
         try {
             checkIn = LocalDate.parse(dataCheckIn, formatter);
             checkOut = LocalDate.parse(dataCheckOut, formatter);
+
+            LocalDate azi = LocalDate.now();
+            if (checkIn.isBefore(azi)) return false;
             if (checkOut.isBefore(checkIn)) return false;
+
         } catch (DateTimeParseException e) {
             return false;
         }
