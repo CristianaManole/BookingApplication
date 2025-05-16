@@ -24,7 +24,7 @@ public class Client extends Persoana{
         return rezervari;
     }
 
-    public boolean rezervareCamera(String tara, String oras, String dataCheckIn, String dataCheckOut, int nrPersoane, int nrCamere) {
+    public boolean rezervareCamera(String nume, String tara, String oras, String dataCheckIn, String dataCheckOut, int nrPersoane, int nrCamere) {
         if (tara == null || tara.trim().isEmpty()) return false;
         if (oras == null || oras.trim().isEmpty()) return false;
 
@@ -44,7 +44,7 @@ public class Client extends Persoana{
         }
         if (nrPersoane <= 0 || nrCamere <= 0) return false;
 
-        Rezervare rez = new Rezervare(dataCheckIn, dataCheckOut, nrPersoane, nrCamere);
+        Rezervare rez = new Rezervare(nume, dataCheckIn, dataCheckOut, nrPersoane, nrCamere);
         Destinatie destinatie = new Destinatie(tara, oras);
         rez.addDestinatie(destinatie);
         rezervari.add(rez);

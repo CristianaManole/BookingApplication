@@ -35,5 +35,13 @@ public class Destinatie {
         return oras;
     }
 
+    public void setTara(String tara) {
+        this.tara = tara;
+    }
+
+    public void setOras(String oras) {
+        this.oras = oras;
+    }
+
 
 }

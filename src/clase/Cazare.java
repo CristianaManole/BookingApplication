@@ -10,23 +10,21 @@ public class Cazare {
     private String nrStele;
     private String tip;
     private int nrMasini;
-    private int nrAvioane;
     ArrayList<String> masini;
-    ArrayList<String> avioane;
+    private int NrBileteAvion;
     private Facilitati[] facilitati;
     private int nrFacilitati;
     private Camera[] camere;
     private int nrCamere;
 
-    public Cazare(String nume, String adresa, String nrStele, String tip, int nrMasini, int nrAvioane) {
+    public Cazare(String nume, String adresa, String nrStele, String tip, int nrMasini, int NrBileteAvion) {
         this.nume = nume;
         this.adresa = adresa;
         this.nrStele = nrStele;
         this.tip = tip;
         this.nrMasini = nrMasini;
-        this.nrAvioane = nrAvioane;
-        masini = new ArrayList<>();
-        avioane = new ArrayList<>();
+        this.NrBileteAvion = NrBileteAvion;
+        masini = new ArrayList<String>();
         nrFacilitati = 0;
         facilitati = new Facilitati[NR_MAX_FACILITATI];
         nrCamere = 0;
@@ -41,7 +39,7 @@ public class Cazare {
     }
 
     public boolean DispAvioane() {
-        if (nrAvioane != 0)
+        if (NrBileteAvion!= 0)
             return true;
         else
             return false;
@@ -53,8 +51,7 @@ public class Cazare {
     }
 
     public void afisareAvioane() {
-        for (int i = 0; i < nrAvioane; i++)
-            System.out.println(avioane.get(i));
+            System.out.println("Sunt disponibile " + NrBileteAvion + "bilete de avion");
     }
 
     public void adaugareFacilitati(Facilitati fac) {
@@ -131,5 +128,17 @@ public class Cazare {
             camere[i].afisare();
 
     }
+    public int getNrMasini(){ return nrMasini; }
+    public int getNrCamere(){ return nrCamere; }
+    public String getNume(){return nume;}
+    public int getNrBileteAvion(){ return NrBileteAvion; }
+
+    public void setNume(String nume){ this.nume = nume; }
+    public void setAdresa(String adresa){ this.adresa = adresa; }
+    public void setNrStele(String nrStele){ this.nrStele = nrStele; }
+    public void setTip(String tip){ this.tip = tip; }
+    public void setNrMasini(int n){ this.nrMasini = n; }
+    public void setNrBileteAvion(int n){ this.NrBileteAvion = n; }
+
 
 }

@@ -35,43 +35,43 @@ public class ClientTest {
         Client client = new Client("Popescu", "Ion", 'M', "1234567890123", "0711111111", TipClient.TURIST);
 
         // Caz valid (check-in in viitor)
-        boolean rezultatValid = client.rezervareCamera("Italia", "Roma", "10.06.2025", "15.06.2025", 2, 1);
+        boolean rezultatValid = client.rezervareCamera("RezervareItalia", "Italia", "Roma", "10.06.2025", "15.06.2025", 2, 1);
         assertTrue(rezultatValid, "Rezervare valida ar trebui sa returneze true");
 
         // Check-in in trecut (ar trebui respins in 2025)
-        boolean trecut = client.rezervareCamera("Italia", "Roma", "10.06.2024", "15.06.2024", 2, 1);
+        boolean trecut = client.rezervareCamera("RezervareItalia","Italia", "Roma", "10.06.2024", "15.06.2024", 2, 1);
         assertFalse(trecut, "Rezervare in trecut nu ar trebui acceptata");
 
         // Tara goala
-        boolean taraGoala = client.rezervareCamera("", "Roma", "10.06.2025", "15.06.2025", 2, 1);
+        boolean taraGoala = client.rezervareCamera("RezervareItalia","", "Roma", "10.06.2025", "15.06.2025", 2, 1);
         assertFalse(taraGoala, "Tara goala nu trebuie acceptata");
 
         // Oras gol
-        boolean orasGol = client.rezervareCamera("Italia", "", "10.06.2025", "15.06.2025", 2, 1);
+        boolean orasGol = client.rezervareCamera("RezervareItalia","Italia", "", "10.06.2025", "15.06.2025", 2, 1);
         assertFalse(orasGol, "Orasul gol nu trebuie acceptat");
 
         // Data check-in invalida (format gresit)
-        boolean dataInvalida = client.rezervareCamera("Italia", "Roma", "10/06/2025", "15.06.2025", 2, 1);
+        boolean dataInvalida = client.rezervareCamera("RezervareItalia","Italia", "Roma", "10/06/2025", "15.06.2025", 2, 1);
         assertFalse(dataInvalida, "Data check-in invalida trebuie respinsa");
 
         // Check-out inainte de check-in
-        boolean checkOutInainte = client.rezervareCamera("Italia", "Roma", "15.06.2025", "10.06.2025", 2, 1);
+        boolean checkOutInainte = client.rezervareCamera("RezervareItalia","Italia", "Roma", "15.06.2025", "10.06.2025", 2, 1);
         assertFalse(checkOutInainte, "Check-out inainte de check-in nu e permis");
 
         // Numar de persoane invalid
-        boolean persoaneInvalide = client.rezervareCamera("Italia", "Roma", "10.06.2025", "15.06.2025", 0, 1);
+        boolean persoaneInvalide = client.rezervareCamera("RezervareItalia","Italia", "Roma", "10.06.2025", "15.06.2025", 0, 1);
         assertFalse(persoaneInvalide, "Numar persoane <= 0 nu trebuie acceptat");
 
         // Numar de camere invalid
-        boolean camereInvalide = client.rezervareCamera("Italia", "Roma", "10.06.2025", "15.06.2025", 2, 0);
+        boolean camereInvalide = client.rezervareCamera("RezervareItalia","Italia", "Roma", "10.06.2025", "15.06.2025", 2, 0);
         assertFalse(camereInvalide, "Numar camere <= 0 nu trebuie acceptat");
 
         // Luna prea mare
-        boolean lunaPreaMare = client.rezervareCamera("Italia", "Roma", "10.13.2025", "15.06.2025", 2, 1);
+        boolean lunaPreaMare = client.rezervareCamera("RezervareItalia","Italia", "Roma", "10.13.2025", "15.06.2025", 2, 1);
         assertFalse(lunaPreaMare, "Luna 13 nu este valida");
 
         // Zi prea mare pentru luna
-        boolean ziPreaMare = client.rezervareCamera("Italia", "Roma", "32.01.2025", "15.02.2025", 2, 1);
+        boolean ziPreaMare = client.rezervareCamera("RezervareItalia","Italia", "Roma", "32.01.2025", "15.02.2025", 2, 1);
         assertFalse(ziPreaMare, "Zi invalida nu trebuie acceptata");
     }
 }
