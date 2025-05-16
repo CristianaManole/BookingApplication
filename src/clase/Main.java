@@ -468,31 +468,6 @@ public class Main {
                                 System.out.println("Index invalid.");
                             break;
                         case "16":      // Modifică detalii vacanţă după numele rezervării
-                            if (angajatCurent.getRezervari().isEmpty()) {
-                                System.out.println("Nu există rezervări.");
-                                break;
-                            }
-
-                            System.out.println("Rezervările angajatului:");
-                            angajatCurent.getRezervari()
-                                    .forEach(r -> System.out.println(" • " + r.getNume()));
-
-                            System.out.print("Introduceţi numele rezervării de modificat: ");
-                            String numeRez = sc.nextLine();
-
-                            Rezervare rezSelect = angajatCurent.getRezervari()
-                                    .stream()
-                                    .filter(r -> r.getNume().equalsIgnoreCase(numeRez))
-                                    .findFirst()
-                                    .orElse(null);
-
-                            if (rezSelect == null) {
-                                System.out.println("Nu există rezervare cu acest nume.");
-                                break;
-                            }
-
-                            angajatCurent.ModificaDetaliiVacanta(rezSelect);     // ← apel la metoda deja definită
-                            break;
 
                         case "17":      // Log out angajat
                             System.out.println("Te-ai delogat cu succes din contul de angajat.");
@@ -575,8 +550,6 @@ public class Main {
                             while (!rezervareReusita) {
                                 System.out.println("Unde doresti să mergi?");
 
-                                System.out.print("Introduceti numele rezervarii: ");
-                                String nume = sc.nextLine();
                                 System.out.print("Introduceti tara: ");
                                 String tara1 = sc.nextLine();
                                 System.out.print("Introduceti orasul: ");
@@ -591,7 +564,7 @@ public class Main {
                                 int nrCam = sc.nextInt();
                                 sc.nextLine();
 
-                                if (clientCurent.rezervareCamera(nume, tara1, oras1, dataCheckIn, dataCheckOut, nrPers, nrCam)) {
+                                if (clientCurent.rezervareCamera(tara1, oras1, dataCheckIn, dataCheckOut, nrPers, nrCam)) {
                                     System.out.println("Rezervarea a fost realizata cu succes.");
                                     rezervareReusita = true;
                                 } else {

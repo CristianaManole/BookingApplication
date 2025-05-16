@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 public class Rezervare {
 
-    private String nume;
     private String data_checkin;
     private String data_checkout;
     private int    nrPersoane;
@@ -15,11 +14,11 @@ public class Rezervare {
     private ArrayList<Destinatie> destinatii;
 
     public Rezervare() {
-        this("", "", "", 0, 0);
+        this("", "", 0, 0);
         this.pretTotal = 0f;
     }
 
-    public Rezervare(String nume, String data_checkin, String data_checkout,
+    public Rezervare(String data_checkin, String data_checkout,
                      int nrPersoane, int nrCamere) {
 
         Random random = new Random();
@@ -112,7 +111,4 @@ public class Rezervare {
     public void setPretTotal(float pret){
         this.pretTotal = pret; 
     }
-    public String getNume() { return nume; }
-    public void setNume(String nume) { this.nume = nume; }
-
 }
