@@ -150,7 +150,7 @@ public class Angajat extends Persoana {
             return returnArray;
         }
         for (Rezervare r : rezervari){
-            if(r.confirmed() == active){
+            if(r.este_confirmata() == active){
                 returnArray.add(r);
             }
         }
@@ -205,7 +205,7 @@ public class Angajat extends Persoana {
 
     public void ValideazaVacanta(Rezervare r) {
         boolean valida = r.getNrPersoane() > 0 && r.getNrCamere() > 0;
-        r.set_confirmed();
+        r.confirmare();
         System.out.println(valida ? "Rezervare VALIDA." : "Rezervare INVALIDA.");
     }
     public void AdaugaMasina(String marca, Cazare c) {

@@ -560,8 +560,11 @@ public class Main {
                             break;
                         }
                         case "15":      // Validează o vacanţă
-                            for (Rezervare r : waitinglist) {
-                                angajatCurent.AdaugaRezervare(r);
+                            if (waitinglist != null) {
+                                for (Rezervare r : waitinglist) {
+                                    angajatCurent.AdaugaRezervare(r);
+                                }
+                                waitinglist.clear();
                             }
                             if (angajatCurent.getRezervari(false).isEmpty()) {
                                 System.out.println("Nu există rezervări.");

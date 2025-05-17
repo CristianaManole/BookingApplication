@@ -111,10 +111,10 @@ public class Rezervare {
     public void setPretTotal(float Pret){
         this.pretTotal = Pret;
     }
-    public void set_confirmed(){
+    public void confirmare(){
         this.verificat =  true;
     }
-    public boolean confirmed(){
+    public boolean este_confirmata(){
         return this.verificat;
     }
 
