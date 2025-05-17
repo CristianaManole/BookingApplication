@@ -649,9 +649,20 @@ public class Main {
                                     System.out.println("Data invalida!");
                                 }
                             }
-
+                            System.out.print("Vrei sa modifici pretul? (Y/N): ");
+                            Float pret = rezMod.getPretTotal();
+                            if (sc.nextLine().equalsIgnoreCase("Y")) {
+                                System.out.print("Introdu noul pret: ");
+                                try {
+                                    Float n = Float.parseFloat(sc.nextLine());
+                                    if (n > 0) pret = n;
+                                    else System.out.println("Nr invalid!");
+                                } catch (NumberFormatException e) {
+                                    System.out.println("Format invalid!");
+                                }
+                            }
 // 🔧 Apelul final refactorizat
-                            angajatCurent.ModificaDetaliiVacanta(rezMod, nrPersoaneNou, nrCamereNou, checkInNou, checkOutNou);
+                            angajatCurent.ModificaDetaliiVacanta(rezMod, nrPersoaneNou, nrCamereNou, checkInNou, checkOutNou,pret);
 
                             System.out.println("Rezervarea a fost actualizată.");
                             break;
@@ -752,7 +763,11 @@ public class Main {
 
                                 if (clientCurent.rezervareCamera(tara1, oras1, dataCheckIn, dataCheckOut, nrPers, nrCam)) {
                                     System.out.println("Rezervarea a fost realizata cu succes.");
-                                    waitinglist.add(clientCurent.getRezervari().getLast());
+                                    List<Rezervare> rezi = clientCurent.getRezervari();
+                                    if (!rezi.isEmpty()) {
+                                        Rezervare ultima = rezi.get(rezi.size() - 1);
+                                        waitinglist.add(ultima);
+                                    }
                                     rezervareReusita = true;
                                 } else {
                                     System.out.println("Date invalide. Incercați din nou.\n");

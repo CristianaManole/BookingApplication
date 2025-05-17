@@ -49,40 +49,40 @@ public class AngajatTest {
         angajat.AdaugaRezervare(r);
 
         // Caz valid: modificare completă
-        boolean modificareCompletValida = angajat.ModificaDetaliiVacanta(r, 4, 2, LocalDate.of(2025, 6, 12), LocalDate.of(2025, 6, 18));
+        boolean modificareCompletValida = angajat.ModificaDetaliiVacanta(r, 4, 2, LocalDate.of(2025, 6, 12), LocalDate.of(2025, 6, 18), 100.0F);
         assertTrue(modificareCompletValida, "Modificare completă validă trebuie să returneze true");
 
         // Caz valid: doar număr persoane
-        boolean modificareNrPersoane = angajat.ModificaDetaliiVacanta(r, 3, null, null, null);
+        boolean modificareNrPersoane = angajat.ModificaDetaliiVacanta(r, 3, null, null, null,100.0F);
         assertTrue(modificareNrPersoane, "Modificare doar nrPersoane valid trebuie să returneze true");
 
         // Caz valid: doar date valide
-        boolean modificareDateValide = angajat.ModificaDetaliiVacanta(r, null, null, LocalDate.of(2025, 7, 1), LocalDate.of(2025, 7, 5));
+        boolean modificareDateValide = angajat.ModificaDetaliiVacanta(r, null, null, LocalDate.of(2025, 7, 1), LocalDate.of(2025, 7, 5),100.0F);
         assertTrue(modificareDateValide, "Modificare doar date valide trebuie să returneze true");
 
         // Caz invalid: rezervare inexistentă
         Rezervare rezervareNoua = new Rezervare("2025-06-01", "2025-06-05", 1, 2);
-        boolean rezervareInexistenta = angajat.ModificaDetaliiVacanta(rezervareNoua, 2, 2, null, null);
+        boolean rezervareInexistenta = angajat.ModificaDetaliiVacanta(rezervareNoua, 2, 2, null, null,100.0F);
         assertFalse(rezervareInexistenta, "Rezervare inexistentă trebuie să returneze false");
 
         // Caz invalid: nr persoane negativ
-        boolean nrPersoaneInvalid = angajat.ModificaDetaliiVacanta(r, -1, null, null, null);
+        boolean nrPersoaneInvalid = angajat.ModificaDetaliiVacanta(r, -1, null, null, null,100.0F);
         assertFalse(nrPersoaneInvalid, "Nr persoane negativ trebuie să returneze false");
 
         // Caz invalid: nr camere 0
-        boolean nrCamereInvalid = angajat.ModificaDetaliiVacanta(r, null, 0, null, null);
+        boolean nrCamereInvalid = angajat.ModificaDetaliiVacanta(r, null, 0, null, null,100.0F);
         assertFalse(nrCamereInvalid, "Nr camere 0 trebuie să returneze false");
 
         // Caz invalid: check-out înainte de check-in
-        boolean dateInvalide = angajat.ModificaDetaliiVacanta(r, null, null, LocalDate.of(2025, 6, 20), LocalDate.of(2025, 6, 15));
+        boolean dateInvalide = angajat.ModificaDetaliiVacanta(r, null, null, LocalDate.of(2025, 6, 20), LocalDate.of(2025, 6, 15),100.0F);
         assertFalse(dateInvalide, "Check-out înainte de check-in trebuie să returneze false");
 
         // Caz invalid: doar check-in setat
-        boolean doarCheckin = angajat.ModificaDetaliiVacanta(r, null, null, LocalDate.of(2025, 6, 10), null);
+        boolean doarCheckin = angajat.ModificaDetaliiVacanta(r, null, null, LocalDate.of(2025, 6, 10), null,100.0F);
         assertFalse(doarCheckin, "Doar check-in fără check-out trebuie să returneze false");
 
         // Caz invalid: doar check-out setat
-        boolean doarCheckout = angajat.ModificaDetaliiVacanta(r, null, null, null, LocalDate.of(2025, 6, 15));
+        boolean doarCheckout = angajat.ModificaDetaliiVacanta(r, null, null, null, LocalDate.of(2025, 6, 15),100.0F);
         assertFalse(doarCheckout, "Doar check-out fără check-in trebuie să returneze false");
     }
 }

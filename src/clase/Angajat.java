@@ -158,7 +158,7 @@ public class Angajat extends Persoana {
 
     }
     public boolean ModificaDetaliiVacanta(Rezervare r, Integer nrPersoaneNou, Integer nrCamereNou,
-                                          LocalDate checkInNou, LocalDate checkOutNou) {
+                                          LocalDate checkInNou, LocalDate checkOutNou,Float pret) {
         if (!rezervari.contains(r)) {
             System.out.println("Rezervarea nu se gaseste in lista angajatului.");
             return false;
@@ -173,7 +173,15 @@ public class Angajat extends Persoana {
                 return false;
             }
         }
-
+        // Vailidare pret
+        if (pret != null) {
+            if (pret > 0) {
+                r.setPretTotal(pret);
+            } else {
+                System.out.println("Pret total invalid!");
+                return false;
+            }
+        }
         // Validare număr camere
         if (nrCamereNou != null) {
             if (nrCamereNou > 0) {
