@@ -13,11 +13,12 @@ public class Main {
         ArrayList<Rezervare> waitinglist = new ArrayList<>();
         ArrayList<Cazare> cazariAvion = new ArrayList<>();
         ArrayList<Cazare> cazariMasina = new ArrayList<>();
+        ArrayList<Boolean> okAvion = new ArrayList<>();
+        ArrayList<Boolean> okMasina = new ArrayList<>();
         Client persoana = new Client("Popescu", "Ion", 'M', "1234567890123", "0722222222", TipClient.TURIST);
         Client client = new Client("Ionescu", "Maria", 'F', "1234567890123", "0733333333", TipClient.CUPLU);
         clienti.add(persoana);
         clienti.add(client);
-
 
 
         ArrayList<Destinatie> destinatii = new ArrayList<>(List.of(
@@ -154,7 +155,7 @@ public class Main {
                     System.out.println("10. Editeaza camera");
                     System.out.println("11. Adauga facilitati");
                     System.out.println("12. Adauga masina");
-                    System.out.println("13. Achizitioneaza masina");
+                    System.out.println("13. Inchiere masina");
                     System.out.println("14. Achizitioneaza bilet avion");
                     System.out.println("15. Valideaza vacanta");
                     System.out.println("16. Modifica detalii vacanta");
@@ -817,19 +818,26 @@ public class Main {
                                 int nrCam = sc.nextInt();
                                 sc.nextLine();
 
-                                // transport
-                                System.out.println("Vrei sa achizitionezi bilet de avion? (da/nu)");
+                                // avion
+                                System.out.println("Vrei sa achizitionezi bilet de avion? (DA/NU)");
                                 String optiune = sc.nextLine();
-                                if (optiune.equalsIgnoreCase("da")) {
+                                if (optiune.equalsIgnoreCase("DA")) {
                                     System.out.println("Cerere trimisa!");
                                     cazariAvion.add(cazare);
+                                    okAvion.add(true);
+                                } else {
+                                    okAvion.add(false);
                                 }
+
                                 //masina
-                                System.out.println("Vrei sa inchiriezi o masina? (da/nu)");
+                                System.out.println("Vrei sa inchiriezi o masina? (DA/NU)");
                                 String optiuneMasina = sc.nextLine();
-                                if (optiuneMasina.equalsIgnoreCase("da")) {
+                                if (optiuneMasina.equalsIgnoreCase("DA")) {
                                     System.out.println("Cerere trimisa!");
                                     cazariMasina.add(cazare);
+                                    okMasina.add(true);
+                                }else {
+                                    okMasina.add(false);
                                 }
 
                                 if (clientCurent.rezervareCamera(tara1, oras1, dataCheckIn, dataCheckOut, nrPers, nrCam)) {
@@ -881,8 +889,8 @@ public class Main {
                                 if(!rezervariInAsteptare.get(i).este_confirmata()) {
                                     System.out.print((i + 1) + ". ");
                                     rezervariInAsteptare.get(i).afisare();
-                                    System.out.println("Bilete de avion: " + cazariAvion.size());
-                                    System.out.println("Masini: " + cazariMasina.size());
+                                    System.out.println("Bilete de avion: " + (okAvion.get(i) ? "DA" : "NU"));
+                                    System.out.println("Masini: " + (okMasina.get(i) ? "DA" : "NU"));
                                     count -= 1;
                                 }
                             }
@@ -945,8 +953,8 @@ public class Main {
                                 if(rezervari.get(i).este_confirmata()) {
                                     System.out.print((i + 1) + ". ");
                                     rezervari.get(i).afisare();
-                                    System.out.println("Bilete de avion: " + cazariAvion.size());
-                                    System.out.println("Masini: " + cazariMasina.size());
+                                    System.out.println("Bilete de avion: " + (okAvion.get(i) ? "DA" : "NU"));
+                                    System.out.println("Masini: " + (okMasina.get(i) ? "DA" : "NU"));
                                     count2 -= 1;
                                 }
                             }
