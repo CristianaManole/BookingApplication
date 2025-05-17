@@ -771,12 +771,22 @@ public class Main {
                                     continue;
                                 }
 
-                                // 2. Alege cazarea (prima din listă)
+                                // 2. Alege cazarea
                                 if (destinatieAleasa.getCazari().isEmpty()) {
                                     System.out.println("Nu exista cazări pentru această destinație.");
                                     continue;
                                 }
-                                Cazare cazare = destinatieAleasa.getCazari().get(0);
+
+                                System.out.println("Cazari disponibile:");
+                                int i = 0;
+                                for (Cazare c : destinatieAleasa.getCazari()) {
+                                    System.out.println(i + 1 + ". " + c.getNume());
+                                    i ++;
+                                }
+                                System.out.print("Alege index cazare: ");
+                                int indexCazare = sc.nextInt() - 1;
+                                sc.nextLine();
+                                Cazare cazare = destinatieAleasa.getCazari().get(indexCazare);
 
                                 // 3. Afișează camerele disponibile
                                 System.out.println("Camere disponibile de la " + cazare.getNume() + ": ");
@@ -785,6 +795,7 @@ public class Main {
                                         c.afisare();
                                     }
                                 }
+
                                 // 4. Alege tipul de cameră
                                 TipCamera tipAles = null;
                                 while (tipAles == null) {
@@ -806,18 +817,6 @@ public class Main {
                                 int nrCam = sc.nextInt();
                                 sc.nextLine();
 
-                                if (clientCurent.rezervareCamera(tara1, oras1, dataCheckIn, dataCheckOut, nrPers, nrCam)) {
-                                    System.out.println("Rezervarea camerei a fost realizata cu succes.");
-                                    List<Rezervare> rezi = clientCurent.getRezervari();
-                                    if (!rezi.isEmpty()) {
-                                        Rezervare ultima = rezi.get(rezi.size() - 1);
-                                        waitinglist.add(ultima);
-                                    }
-                                    rezervareReusita = true;
-
-                                } else {
-                                    System.out.println("Date invalide. Incercați din nou.\n");
-                                }
                                 // transport
                                 System.out.println("Vrei sa achizitionezi bilet de avion? (da/nu)");
                                 String optiune = sc.nextLine();
@@ -832,6 +831,20 @@ public class Main {
                                     System.out.println("Cerere trimisa!");
                                     cazariMasina.add(cazare);
                                 }
+
+                                if (clientCurent.rezervareCamera(tara1, oras1, dataCheckIn, dataCheckOut, nrPers, nrCam)) {
+                                    System.out.println("Rezervarea camerei a fost realizata cu succes.");
+                                    List<Rezervare> rezi = clientCurent.getRezervari();
+                                    if (!rezi.isEmpty()) {
+                                        Rezervare ultima = rezi.get(rezi.size() - 1);
+                                        waitinglist.add(ultima);
+                                    }
+                                    rezervareReusita = true;
+
+                                } else {
+                                    System.out.println("Date invalide. Incercați din nou.\n");
+                                }
+
                             }
 
                             // Aici se va face plata
