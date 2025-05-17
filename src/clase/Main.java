@@ -4,6 +4,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
@@ -78,6 +79,15 @@ public class Main {
             listaFacilitati.add(TipFacilitati.ApresSki);
             Facilitati facilitati = new Facilitati(listaFacilitati);
             cazare.adaugareFacilitati(facilitati);
+        }
+
+        String[] marciDisponibile = {"Toyota", "Ford", "BMW", "Dacia", "Volkswagen"};
+
+        Random rand = new Random();
+        for (Cazare cazare : cazari) {
+            String marcaRandom = marciDisponibile[rand.nextInt(marciDisponibile.length)];
+            cazare.masini.add(marcaRandom);
+            cazare.setNrMasini(cazare.getNrMasini() + 1);
         }
 
 
@@ -508,9 +518,12 @@ public class Main {
                             break;
                         }
 
-                        /*  Achiziționează mașina */
+                        /*  Inchiriere mașina */
                         case "13": {
-                            if (cazari.isEmpty()) { System.out.println("Nu exista cazari."); break; }
+                            if (cazariMasina.isEmpty()) {
+                                System.out.println("Nu exista cazari cu masini in asteptare.");
+                                break;
+                            }
 
                             System.out.println("Cazarile cu masini in lista de asteptare:");
                             for (int i = 0; i < cazariMasina.size(); i++)
@@ -519,28 +532,40 @@ public class Main {
                             System.out.print("Alege index cazare: ");
                             int idxMasRem = Integer.parseInt(sc.nextLine()) - 1;
                             if (idxMasRem < 0 || idxMasRem >= cazariMasina.size()) {
-                                System.out.println("Index invalid."); break;
+                                System.out.println("Index invalid.");
+                                break;
                             }
 
-                            System.out.print("Marcă mașina de scos: ");
+                            Cazare cazareSelectata = cazariMasina.get(idxMasRem);
+
+                            if (cazareSelectata.masini.isEmpty()) {
+                                System.out.println("Aceasta cazare nu are mașini disponibile.");
+                                break;
+                            }
+
+                            System.out.println("Mașini disponibile în această cazare:");
+                            for (String marca : cazareSelectata.masini) {
+                                System.out.println("- " + marca);
+                            }
+
+                            System.out.print("Marca mașina de scos: ");
                             String marcaRem = sc.nextLine().trim();
 
-                            Cazare cazareSelectata = cazariMasina.get(idxMasRem);
-                            if(angajatCurent.AchizitionareMasina(marcaRem, cazari.get(idxMasRem)))
+                            if (angajatCurent.AchizitionareMasina(marcaRem, cazareSelectata)) {
                                 cazariMasina.remove(cazareSelectata);
+                                System.out.println("Mașina a fost achiziționata, iar cazarea a fost scoasa din lista de așteptare.");
+                            } else {
+                                System.out.println("Mașina nu a fost gasita in lista.");
+                            }
 
                             break;
                         }
 
-                        /*  Achizitioneaza bilet avion */
+
                         case "14": {
 
-                            ArrayList<Cazare> toate = new ArrayList<>();
-                            for (Destinatie d : destinatii)
-                                toate.addAll(d.cazari);
-
-                            if (toate.isEmpty()) {
-                                System.out.println("Nu exista nicio cazare în sistem.");
+                            if (cazariAvion.isEmpty()) {
+                                System.out.println("Nu exista cazari cu bilete de avion in asteptare.");
                                 break;
                             }
 
@@ -553,13 +578,24 @@ public class Main {
 
                             System.out.print("Alege index cazare: ");
                             int idx = Integer.parseInt(sc.nextLine()) - 1;
-                            if (idx < 0 || idx >= cazariAvion.size()) { System.out.println("Index invalid."); break; }
+                            if (idx < 0 || idx >= cazariAvion.size()) {
+                                System.out.println("Index invalid.");
+                                break;
+                            }
 
                             Cazare cazareSelectata = cazariAvion.get(idx);
-                            angajatCurent.AchizitionareAvion(cazariAvion.get(idx));
-                            cazariAvion.remove(cazareSelectata);
+
+                            boolean succes = angajatCurent.AchizitionareAvion(cazareSelectata);
+
+                            if (succes) {
+                                cazariAvion.remove(cazareSelectata);
+                                System.out.println("Cazarea a fost scoasă din lista de așteptare pentru avion.");
+                            }
+
                             break;
                         }
+
+
                         case "15":      // Validează o vacanţă
                             if (waitinglist != null) {
                                 for (Rezervare r : waitinglist) {
@@ -670,12 +706,12 @@ public class Main {
                             break;
                         case "17":      // Log out angajat
                             System.out.println("Te-ai delogat cu succes din contul de angajat.");
-                            ruleazaA = false;        // iese din meniul angajat şi revine la meniul principal
+                            ruleazaA = false;
                             break;
                         case "0":      // Iesire aplicatie
                             System.out.println("Aplicatia a fost inchisa. La revedere!");
                             aplicatieDeschisa = false;
-                            ruleazaA = false;        // iese din meniul angajat
+                            ruleazaA = false;
                             break;
                     }
                 }

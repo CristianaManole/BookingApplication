@@ -221,13 +221,15 @@ public class Angajat extends Persoana {
         System.out.println("Masina adaugata: " + marca);
     }
 
-    public void AchizitionareAvion(Cazare c) {
-        if (c.getNrBileteAvion() <= 0) {
+    public boolean AchizitionareAvion(Cazare cazare) {
+        if (cazare.getNrBileteAvion() > 0) {
+            cazare.setNrBileteAvion(cazare.getNrBileteAvion() - 1);
+            System.out.println("Bilet de avion achiziționat cu succes.");
+            return true;
+        } else {
             System.out.println("Nu mai sunt bilete de avion disponibile.");
-            return;
+            return false;
         }
-        c.setNrBileteAvion(c.getNrBileteAvion() - 1);
-        System.out.println("Bilet de avion achizitionat. Mai sunt disponibile: " + c.getNrBileteAvion());
     }
 
 
