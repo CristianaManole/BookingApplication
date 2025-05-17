@@ -74,7 +74,6 @@ public class Client extends Persoana{
         return true;
     }
 
-
     @Override
     public void afisare() {
         super.afisare();

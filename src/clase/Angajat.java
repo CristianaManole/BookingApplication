@@ -135,7 +135,6 @@ public class Angajat extends Persoana {
 
     public void AdaugaRezervare(Rezervare r) {
         rezervari.add(r);
-        System.out.println("Rezervarea a fost adaugata.");
     }
 
     public void StergeRezervare(Rezervare r) {
