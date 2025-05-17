@@ -184,10 +184,11 @@ public class Main {
                                 break;
                             }
 
-                            System.out.println("Destinații disponibile:");
-                            for (int i = 0; i < destinatii.size(); i++)
-                                System.out.printf("%2d. %s%n", i + 1,
-                                        destinatii.get(i).getOras());
+                            System.out.println("Destinatii disponibile:");
+                            for (int i = 0; i < destinatii.size(); i++) {
+                                System.out.print((i + 1) + ". ");
+                                destinatii.get(i).afisareDestinatii();
+                            }
 
                             System.out.print("Index destinație de șters: ");
                             int idxDel = Integer.parseInt(sc.nextLine()) - 1;
@@ -210,7 +211,7 @@ public class Main {
                             System.out.println("Destinatii disponibile:");
                             for (int i = 0; i < destinatii.size(); i++) {
                                 System.out.print((i + 1) + ". ");
-                                destinatii.get(i).afisareDestinatii();   // afiseaza doar tara + oras
+                                destinatii.get(i).afisareDestinatii();
                             }
 
                             System.out.print("Index destinatie de editat: ");
@@ -510,20 +511,23 @@ public class Main {
                         case "13": {
                             if (cazari.isEmpty()) { System.out.println("Nu exista cazari."); break; }
 
-                            System.out.println("Cazari disponibile:");
-                            for (int i = 0; i < cazari.size(); i++)
-                                System.out.printf("%2d. %s%n", i + 1, cazari.get(i).getNume());
+                            System.out.println("Cazarile cu masini in lista de asteptare:");
+                            for (int i = 0; i < cazariMasina.size(); i++)
+                                System.out.printf("%2d. %s%n", i + 1, cazariMasina.get(i).getNume());
 
                             System.out.print("Alege index cazare: ");
                             int idxMasRem = Integer.parseInt(sc.nextLine()) - 1;
-                            if (idxMasRem < 0 || idxMasRem >= cazari.size()) {
+                            if (idxMasRem < 0 || idxMasRem >= cazariMasina.size()) {
                                 System.out.println("Index invalid."); break;
                             }
 
                             System.out.print("Marcă mașina de scos: ");
                             String marcaRem = sc.nextLine().trim();
 
-                            angajatCurent.AchizitionareMasina(marcaRem, cazari.get(idxMasRem));
+                            Cazare cazareSelectata = cazariMasina.get(idxMasRem);
+                            if(angajatCurent.AchizitionareMasina(marcaRem, cazari.get(idxMasRem)))
+                                cazariMasina.remove(cazareSelectata);
+
                             break;
                         }
 
@@ -539,18 +543,20 @@ public class Main {
                                 break;
                             }
 
-                            System.out.println("Cazari si bilete de avion disponibile:");
-                            for (int i = 0; i < toate.size(); i++) {
-                                Cazare c = toate.get(i);
+                            System.out.println("Cazarile cu bilete de avion in asteptare:");
+                            for (int i = 0; i < cazariAvion.size(); i++) {
+                                Cazare c = cazariAvion.get(i);
                                 System.out.printf("%2d. %s → ", i + 1, c.getNume());
                                 c.afisareAvioane();
                             }
 
                             System.out.print("Alege index cazare: ");
                             int idx = Integer.parseInt(sc.nextLine()) - 1;
-                            if (idx < 0 || idx >= toate.size()) { System.out.println("Index invalid."); break; }
+                            if (idx < 0 || idx >= cazariAvion.size()) { System.out.println("Index invalid."); break; }
 
-                            angajatCurent.AchizitionareAvion(toate.get(idx));
+                            Cazare cazareSelectata = cazariAvion.get(idx);
+                            angajatCurent.AchizitionareAvion(cazariAvion.get(idx));
+                            cazariAvion.remove(cazareSelectata);
                             break;
                         }
                         case "15":      // Validează o vacanţă

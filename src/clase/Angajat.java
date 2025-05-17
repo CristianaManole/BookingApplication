@@ -231,14 +231,15 @@ public class Angajat extends Persoana {
     }
 
 
-    public void AchizitionareMasina(String marca, Cazare c) {
+    public boolean AchizitionareMasina(String marca, Cazare c) {
         if (!c.masini.contains(marca)) {
             System.out.println("Masina cu marca " + marca + " nu este disponibila.");
-            return;
+            return false;
         }
         c.masini.remove(marca);
         c.setNrMasini(Math.max(0, c.getNrMasini() - 1));
         System.out.println("Masina achizitionata: " + marca);
+        return true;
     }
 
 
