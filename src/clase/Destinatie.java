@@ -42,6 +42,9 @@ public class Destinatie {
     public void setOras(String oras) {
         this.oras = oras;
     }
+    public ArrayList<Cazare> getCazari() {
+        return cazari;
+    }
 
 
 }

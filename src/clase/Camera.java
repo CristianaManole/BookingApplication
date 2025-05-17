@@ -11,12 +11,7 @@ public class Camera {
     }
 
     public void afisare() {
-        System.out.println("Tip camera: " + tip);
-        System.out.println("Pret: " + pret);
-        if (disponibiltate)
-            System.out.println("Camera disponibila");
-        else
-            System.out.println("Camera non disponibila");
+        System.out.println("Tip camera: " + tip + ", Pret: " + pret);
     }
 
     public void setTip(TipCamera tip) {
@@ -29,5 +24,11 @@ public class Camera {
 
     public void setDisponibilitate(boolean disponibiltate) {
         this.disponibiltate = disponibiltate;
+    }
+    public boolean getDisponibilitate() {
+        return this.disponibiltate;
+    }
+    public TipCamera getTip() {
+        return this.tip;
     }
 }

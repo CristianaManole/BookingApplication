@@ -746,11 +746,49 @@ public class Main {
                             boolean rezervareReusita = false;
                             while (!rezervareReusita) {
                                 System.out.println("Unde doresti să mergi?");
-
                                 System.out.print("Introduceti tara: ");
                                 String tara1 = sc.nextLine();
                                 System.out.print("Introduceti orasul: ");
                                 String oras1 = sc.nextLine();
+
+                                Destinatie destinatieAleasa = null;
+                                for (Destinatie d : destinatii) {
+                                    if (d.getTara().equalsIgnoreCase(tara1) && d.getOras().equalsIgnoreCase(oras1)) {
+                                        destinatieAleasa = d;
+                                        break;
+                                    }
+                                }
+
+                                if (destinatieAleasa == null) {
+                                    System.out.println("Destinatia nu exista.");
+                                    continue;
+                                }
+
+                                // 2. Alege cazarea (prima din listă)
+                                if (destinatieAleasa.getCazari().isEmpty()) {
+                                    System.out.println("Nu exista cazări pentru această destinație.");
+                                    continue;
+                                }
+                                Cazare cazare = destinatieAleasa.getCazari().get(0);
+
+                                // 3. Afișează camerele disponibile
+                                System.out.println("Camere disponibile de la " + cazare.getNume() + ": ");
+                                for (Camera c : cazare.getCamere()) {
+                                    if (c != null && c.getDisponibilitate()) {
+                                        c.afisare();
+                                    }
+                                }
+                                // 4. Alege tipul de cameră
+                                TipCamera tipAles = null;
+                                while (tipAles == null) {
+                                    System.out.print("Ce tip de cameră dorești (SINGLE, DOUBLE, TWIN, TRIPLE, SUITE): ");
+                                    String input = sc.nextLine().trim().toUpperCase();
+                                    try {
+                                        tipAles = TipCamera.valueOf(input);
+                                    } catch (IllegalArgumentException e) {
+                                        System.out.println("Tip de cameră invalid. Încearcă din nou.");
+                                    }
+                                }
                                 System.out.print("Introduceti data check-in (dd.MM.yyyy): ");
                                 String dataCheckIn = sc.nextLine();
                                 System.out.print("Introduceti data check-out (dd.MM.yyyy): ");

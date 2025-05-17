@@ -118,10 +118,7 @@ public class Cazare {
     }
 
     public void afisare() {
-        System.out.println("Nume cazare: " + nume);
-        System.out.println("Adresa cazare: " + adresa);
-        System.out.println("Numar stele cazare: " + nrStele);
-        System.out.println("Tip cazare: " + tip);
+        System.out.println("Nume cazare: " + nume + ", " + nrStele + "*" + ", Adresa: " + adresa + ", Tip: " + tip);
         for (int i = 0; i < nrFacilitati; i++)
             facilitati[i].afisare();
         for (int i = 0; i < nrCamere; i++)
@@ -140,6 +137,7 @@ public class Cazare {
     public void setTip(String tip){ this.tip = tip; }
     public void setNrMasini(int n){ this.nrMasini = n; }
     public void setNrBileteAvion(int n){ this.NrBileteAvion = n; }
+    public Camera[] getCamere(){ return camere; }
 
 
 }
