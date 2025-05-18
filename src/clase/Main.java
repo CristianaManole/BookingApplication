@@ -833,17 +833,8 @@ public class Main {
                                     }
                                 }
 
-                                // 4. Alege tipul de cameră
-                                TipCamera tipAles = null;
-                                while (tipAles == null) {
-                                    System.out.print("Ce tip de cameră dorești (SINGLE, DOUBLE, TWIN, TRIPLE, SUITE): ");
-                                    String input = sc.nextLine().trim().toUpperCase();
-                                    try {
-                                        tipAles = TipCamera.valueOf(input);
-                                    } catch (IllegalArgumentException e) {
-                                        System.out.println("Tip de cameră invalid. Încearcă din nou.");
-                                    }
-                                }
+                                System.out.print("Ce tip de cameră dorești (SINGLE, DOUBLE, TWIN, TRIPLE, SUITE): ");
+                                String tipCamera = sc.nextLine().trim().toUpperCase();
                                 System.out.print("Introduceti data check-in (dd.MM.yyyy): ");
                                 String dataCheckIn = sc.nextLine();
                                 System.out.print("Introduceti data check-out (dd.MM.yyyy): ");
@@ -876,7 +867,7 @@ public class Main {
                                     okMasina.add(false);
                                 }
 
-                                if (clientCurent.rezervareCamera(tara1, oras1, dataCheckIn, dataCheckOut, nrPers, nrCam)) {
+                                if (clientCurent.rezervareCamera(tara1, oras1, dataCheckIn, dataCheckOut, nrPers, nrCam, tipCamera)) {
                                     System.out.println("Rezervarea camerei a fost realizata cu succes.");
                                     List<Rezervare> rezi = clientCurent.getRezervari();
                                     if (!rezi.isEmpty()) {

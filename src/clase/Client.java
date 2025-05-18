@@ -24,9 +24,16 @@ public class Client extends Persoana{
         return rezervari;
     }
 
-    public boolean rezervareCamera( String tara, String oras, String dataCheckIn, String dataCheckOut, int nrPersoane, int nrCamere) {
+    public boolean rezervareCamera( String tara, String oras, String dataCheckIn, String dataCheckOut, int nrPersoane, int nrCamere, String tipCamera) {
         if (tara == null || tara.trim().isEmpty()) return false;
         if (oras == null || oras.trim().isEmpty()) return false;
+
+        TipCamera tipAles;
+        try {
+            tipAles = TipCamera.valueOf(tipCamera.trim().toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
 
         LocalDate checkIn, checkOut;
 
