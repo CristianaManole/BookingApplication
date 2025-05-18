@@ -845,6 +845,20 @@ public class Main {
                                 int nrCam = sc.nextInt();
                                 sc.nextLine();
 
+                                if (clientCurent.rezervareCamera(tara1, oras1, dataCheckIn, dataCheckOut, nrPers, nrCam, tipCamera)) {
+                                    System.out.println("Rezervarea camerei a fost realizata cu succes.");
+                                    List<Rezervare> rezi = clientCurent.getRezervari();
+                                    if (!rezi.isEmpty()) {
+                                        Rezervare ultima = rezi.get(rezi.size() - 1);
+                                        waitinglist.add(ultima);
+                                    }
+                                    rezervareReusita = true;
+
+                                } else {
+                                    System.out.println("Date invalide. Incercați din nou.\n");
+                                    continue;
+                                }
+
                                 // avion
                                 System.out.println("Vrei sa achizitionezi bilet de avion? (DA/NU)");
                                 String optiune = sc.nextLine();
@@ -867,18 +881,6 @@ public class Main {
                                     okMasina.add(false);
                                 }
 
-                                if (clientCurent.rezervareCamera(tara1, oras1, dataCheckIn, dataCheckOut, nrPers, nrCam, tipCamera)) {
-                                    System.out.println("Rezervarea camerei a fost realizata cu succes.");
-                                    List<Rezervare> rezi = clientCurent.getRezervari();
-                                    if (!rezi.isEmpty()) {
-                                        Rezervare ultima = rezi.get(rezi.size() - 1);
-                                        waitinglist.add(ultima);
-                                    }
-                                    rezervareReusita = true;
-
-                                } else {
-                                    System.out.println("Date invalide. Incercați din nou.\n");
-                                }
 
                             }
 
