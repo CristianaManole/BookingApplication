@@ -135,7 +135,6 @@ public class Angajat extends Persoana {
 
     public void AdaugaRezervare(Rezervare r) {
         rezervari.add(r);
-        System.out.println("Rezervarea a fost adaugata.");
     }
 
     public void StergeRezervare(Rezervare r) {
@@ -222,24 +221,27 @@ public class Angajat extends Persoana {
         System.out.println("Masina adaugata: " + marca);
     }
 
-    public void AchizitionareAvion(Cazare c) {
-        if (c.getNrBileteAvion() <= 0) {
+    public boolean AchizitionareAvion(Cazare cazare) {
+        if (cazare.getNrBileteAvion() > 0) {
+            cazare.setNrBileteAvion(cazare.getNrBileteAvion() - 1);
+            System.out.println("Bilet de avion achiziționat cu succes.");
+            return true;
+        } else {
             System.out.println("Nu mai sunt bilete de avion disponibile.");
-            return;
+            return false;
         }
-        c.setNrBileteAvion(c.getNrBileteAvion() - 1);
-        System.out.println("Bilet de avion achizitionat. Mai sunt disponibile: " + c.getNrBileteAvion());
     }
 
 
-    public void AchizitionareMasina(String marca, Cazare c) {
+    public boolean AchizitionareMasina(String marca, Cazare c) {
         if (!c.masini.contains(marca)) {
             System.out.println("Masina cu marca " + marca + " nu este disponibila.");
-            return;
+            return false;
         }
         c.masini.remove(marca);
         c.setNrMasini(Math.max(0, c.getNrMasini() - 1));
         System.out.println("Masina achizitionata: " + marca);
+        return true;
     }
 
 
