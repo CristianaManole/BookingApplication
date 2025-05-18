@@ -636,6 +636,7 @@ public class Main {
                                     checkInNou = LocalDate.parse(sc.nextLine());
                                 } catch (DateTimeParseException e) {
                                     System.out.println("Data invalida!");
+
                                 }
                             }
 
@@ -661,7 +662,7 @@ public class Main {
                                     System.out.println("Format invalid!");
                                 }
                             }
-// 🔧 Apelul final refactorizat
+
                             angajatCurent.ModificaDetaliiVacanta(rezMod, nrPersoaneNou, nrCamereNou, checkInNou, checkOutNou,pret);
 
                             System.out.println("Rezervarea a fost actualizată.");
